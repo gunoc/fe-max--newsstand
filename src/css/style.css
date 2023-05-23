@@ -20,19 +20,9 @@
   --font-size-14: 0.875rem;
   --font-size-12: 0.75rem;
   --font-family: 'Pretendard Variable';
-  /* 
-  --font-display: normal bold 1.5rem / auto 'Pretendard Variable'; 
-  --font-title-md: normal bold 1rem / auto 'Pretendard Variable'; 
-  --font-title-sm: normal bold 0.875rem / auto 'Pretendard Variable'; 
-  --font-title-xs: normal bold 0.75rem / auto 'Pretendard Variable'; 
-  --font-body-md: normal medium 1rem / 22px 'Pretendard Variable';
-  --font-body-sm: normal medium 0.875rem / auto 'Pretendard Variable';
-  --font-body-xs: normal medium 0.75rem / auto 'Pretendard Variable'; */
 }
 
 body {
-  /* font: font-style font-weight font-size/line-height font-family; */
-
   font-family: 'Pretendard Variable', Pretendard, -apple-system,
     BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
     'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
@@ -46,16 +36,18 @@ body {
 body * {
   /* border: 1px solid red; */
 }
-.root {
+my-app {
+  display: block;
   width: 930px;
   height: 586px;
 }
 
-.header {
+app-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 40px;
 }
+
 .header__logo {
   display: flex;
   justify-content: space-between;
