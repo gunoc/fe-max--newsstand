@@ -4,7 +4,6 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
-    // 'no-unused-vars': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
     'no-console': 'off',
