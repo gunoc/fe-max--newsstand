@@ -1,0 +1,213 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css');
+
+:root {
+  --color-white-70: rgba(255, 255, 255, 0.7);
+  --color-white: #ffffff;
+  --color-off-white: #f5f7f9;
+  --color-gray-100: #d2dae0;
+  --color-gray-200: #879298;
+  --color-gray-300: #6e8091;
+  --color-gray-400: #5f6e76;
+  --color-gray-500: #4b5966;
+  --color-black: #14212b;
+  --color-primary: #4362d0;
+
+  --font-style-normal: normal;
+  --font-weight-bold: bold;
+  --font-line-height: 22px;
+  --font-size-24: 1.5rem;
+  --font-size-16: 1rem;
+  --font-size-14: 0.875rem;
+  --font-size-12: 0.75rem;
+  --font-family: 'Pretendard Variable';
+  /* 
+  --font-display: normal bold 1.5rem / auto 'Pretendard Variable'; 
+  --font-title-md: normal bold 1rem / auto 'Pretendard Variable'; 
+  --font-title-sm: normal bold 0.875rem / auto 'Pretendard Variable'; 
+  --font-title-xs: normal bold 0.75rem / auto 'Pretendard Variable'; 
+  --font-body-md: normal medium 1rem / 22px 'Pretendard Variable';
+  --font-body-sm: normal medium 0.875rem / auto 'Pretendard Variable';
+  --font-body-xs: normal medium 0.75rem / auto 'Pretendard Variable'; */
+}
+
+body {
+  /* font: font-style font-weight font-size/line-height font-family; */
+
+  font-family: 'Pretendard Variable', Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body * {
+  /* border: 1px solid red; */
+}
+.root {
+  width: 930px;
+  height: 586px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.header__logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.header__logo-link {
+  font-size: var(--font-size-24);
+  font-weight: 700;
+  font-family: 'Pretendard Variable';
+  color: var(--color-black);
+}
+.header__date {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  font-size: var(--font-size-16);
+  font-weight: 500;
+  color: var(--color-gray-500);
+}
+
+.rolling {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.rolling__section {
+  display: flex;
+  padding: 16px;
+  width: 461px;
+  height: 49px;
+  gap: 16px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-gray-100);
+  background-color: var(--color-off-white);
+}
+.rolling__press {
+  white-space: nowrap;
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  cursor: pointer;
+}
+.rolling__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--font-size-14);
+  font-weight: 500;
+  color: var(--color-gray-500);
+  cursor: pointer;
+}
+.rolling__title:hover {
+  text-decoration: underline;
+}
+
+/* media */
+.media {
+  position: relative;
+}
+.btn__box {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1073px;
+  display: flex;
+  justify-content: space-between;
+}
+.btn__box button {
+  cursor: pointer;
+}
+.btn__box--prev {
+  padding: 20px 12px;
+  background: url(../images/LeftButton.png) no-repeat center / cover;
+}
+.btn__box--next {
+  padding: 20px 12px;
+  background: url(../images/RightButton.png) no-repeat center / cover;
+}
+
+.media__view {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 33px;
+  margin-bottom: 25px;
+}
+.media__view--text {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-16);
+  color: var(--color-gray-200);
+  font-weight: 500;
+}
+.media__view--text span {
+  cursor: pointer;
+}
+.media__view--text--active {
+  color: var(--color-black);
+  font-weight: 700;
+}
+
+.media__view--icon {
+  display: flex;
+  gap: 14px;
+}
+.media__view--icon button {
+  cursor: pointer;
+}
+.media__view--icon--list {
+  padding: 9px;
+  background: url(../images/icon-list.png) no-repeat center / cover;
+}
+.media__view--icon--grid {
+  padding: 9px;
+  background: url(../images/icon-grid.png) no-repeat center / cover;
+}
+
+/* view-type-grid */
+.media__grid--container {
+  width: 930px;
+  height: 388px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+
+  border-top: 1px solid var(--color-gray-100);
+  border-left: 1px solid var(--color-gray-100);
+}
+.media__grid--item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+/* view-type-list */
+.media__list {
+  width: 930px;
+  height: 388px;
+  border: 1px solid var(--color-gray-100);
+}
+.media__list--field ul {
+  display: flex;
+  height: 40px;
+  background: var(--color-off-white);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+.media__list--field--category {
+  padding: 11.5px 16px;
+}

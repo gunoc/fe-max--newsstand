@@ -1,13 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>BV Newsstand</title>
+    <link rel="stylesheet" href="./src/css/reset.css" />
+    <link rel="stylesheet" href="./src/css/style.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="root">
+      <div class="header">
+        <div class="header__logo">
+          <a href=""></a>
+          <img
+            class="header__logo-img"
+            src="./src/images/icon-newspaper.png"
+            alt="로고"
+          />
+          <a class="header__logo-link" href="">뉴스스탠드</a>
+        </div>
+        <span class="header__date">2023. 02. 10 금요일</span>
+      </div>
+      <div class="rolling">
+        <div class="rolling__section rolling__section--left">
+          <a class="rolling__press">연합뉴스</a>
+          <ul>
+            <li class="rolling__title" data="1">
+              내일 누리호 발사…날씨 '이상 무'
+            </li>
+            <!-- <li class="rolling__title"  data="2">2</li>
+            <li class="rolling__title"  data="3">3</li>
+            <li class="rolling__title" data="4">4</li>
+            <li class="rolling__title" data="5">5</li> -->
+          </ul>
+        </div>
+        <div class="rolling__section rolling__section--right">
+          <a class="rolling__press">연합뉴스</a>
+          <ul>
+            <li class="rolling__title">
+              [속보] 尹 "공공질서 무너뜨린 민노총 집회 용납 어려워"
+            </li>
+            <!-- <li class="rolling__title" data="7">7</li>
+            <li class="rolling__title" data="8">8</li>
+            <li class="rolling__title" data="9">9</li>
+            <li class="rolling__title" data="10">10</li> -->
+          </ul>
+        </div>
+      </div>
+      <main class="media">
+        <div class="btn__box">
+          <button type="button" class="btn__box--prev" title="prev"></button>
+          <button type="button" class="btn__box--next" title="next"></button>
+        </div>
+        <div class="media__view">
+          <div class="media__view--text">
+            <span class="media__view--text--active">전체 언론사</span>
+            <span>내가 구독한 언론사</span>
+          </div>
+          <div class="media__view--icon">
+            <button
+              type="button"
+              class="media__view--icon--list"
+              title="리스트"
+            ></button>
+            <button
+              type="button"
+              class="media__view--icon--grid"
+              title="그리드"
+            ></button>
+            <!-- <img src="./src/images/icon-list.png" alt="리스트보기" />
+            <img src="./src/images/icon-grid.png" alt="그리드보기" /> -->
+          </div>
+        </div>
+        <!-- <div class="media__grid">
+          <ul class="media__grid--container">
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사1" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사2" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사3" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사4" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사5" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사6" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사7" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사8" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사9" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사10" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사11" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사12" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사13" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사14" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사15" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사16" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사17" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사18" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사19" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사20" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사21" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사22" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사23" />
+            </li>
+            <li class="media__grid--item">
+              <img src="./src/images/media__logo.png" alt="언론사24" />
+            </li>
+          </ul>
+        </div> -->
+        <div class="media__list">
+          <div class="media__list--field">
+            <ul>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>종합/경제</span>
+                  <span>1/81</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>방송/통신</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>IT</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>영자지</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>스포츠/연예</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>매거진/전문지</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+              <li class="media__list--field--category">
+                <div class="progress-bar">
+                  <span>지역</span>
+                  <!-- 구독한 리스트면 chevron-right-->
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="media__list--press--news">
+            <div class="media__list--press--info">
+              <img src="./src/images/media__logo.png" alt="로고" />
+              <span>2023.02.10. 18:27 편집</span>
+              <div>
+                <div>+</div>
+                <span>구독하기</span>
+              </div>
+            </div>
+          </div>
+          <div class="media__list--press--news">
+            <div class="media__list--press--news--main">
+              <div class="media__list--press--news--main-thumbnail">
+                백그라운드
+              </div>
+              <span class="media__list--press--news--main-title">
+                또 국민연금의 몽니…현대百 지주사 불발
+              </span>
+            </div>
+            <div class="media__list--press--news--sub">
+              <ul>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  "위스키 사려고 이틀 전부터 줄 섰어요"
+                </li>
+                <li class="media__list--press--news--sub-title">
+                  서울경제 언론사에서 직접 편집한 뉴스입니다.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
