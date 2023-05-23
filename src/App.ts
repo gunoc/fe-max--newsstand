@@ -4,7 +4,10 @@ class App extends HTMLElement {
   }
 
   render() {
-    this.innerHTML = `<app-header></app-header>`;
+    this.innerHTML = `
+    <app-header></app-header>
+    <app-rolling></app-rolling>
+    `;
   }
 }
 

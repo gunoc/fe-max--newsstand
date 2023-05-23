@@ -93,6 +93,7 @@ app-header {
   cursor: pointer;
 }
 .rolling__title {
+  height: 37px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
