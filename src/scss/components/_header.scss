@@ -1,0 +1,25 @@
+@use "../common/variables" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+
+  &__logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    &-link {
+      font: $font-display;
+      color: $color-black;
+    }
+  }
+  &__date {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font: $font-body-md;
+    color: $color-gray-500;
+  }
+}

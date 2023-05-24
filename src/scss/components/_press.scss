@@ -1,0 +1,77 @@
+@use "../common/variables" as *;
+
+.media {
+  position: relative;
+
+  &__view {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 33px;
+    margin-bottom: 25px;
+    &--text {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      font: $font-title-md;
+      color: $color-gray-200;
+      > span {
+        cursor: pointer;
+      }
+      &--active {
+        color: $color-black;
+        font-weight: 700;
+      }
+    }
+    &--icon {
+      display: flex;
+      gap: 14px;
+      > button {
+        cursor: pointer;
+      }
+      &--list {
+        padding: 9px;
+        background: url(../images/icon-list.png) no-repeat center / cover;
+      }
+      &--grid {
+        padding: 9px;
+        background: url(../images/icon-grid.png) no-repeat center / cover;
+      }
+    }
+  }
+  /* allPress-grid */
+  &__grid--container {
+    width: 930px;
+    height: 388px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+
+    border-top: 1px solid $color-gray-100;
+    border-left: 1px solid $color-gray-100;
+  }
+  &__grid--item {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-right: 1px solid $color-gray-100;
+    border-bottom: 1px solid $color-gray-100;
+  }
+  /* allPress-list */
+  &__list {
+    width: 930px;
+    height: 388px;
+    border: 1px solid $color-gray-100;
+    &--field ul {
+      display: flex;
+      height: 40px;
+      background: $color-off-white;
+      border-bottom: 1px solid $color-gray-100;
+      &--category {
+        padding: 11.5px 16px;
+      }
+    }
+  }
+}
