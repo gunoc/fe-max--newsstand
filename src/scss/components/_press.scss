@@ -64,13 +64,15 @@
     width: 930px;
     height: 388px;
     border: 1px solid $color-gray-100;
-    &--field ul {
-      display: flex;
-      height: 40px;
-      background: $color-off-white;
-      border-bottom: 1px solid $color-gray-100;
-      &--category {
-        padding: 11.5px 16px;
+    &--field {
+      ul {
+        display: flex;
+        height: 40px;
+        align-items: center;
+        background: $color-off-white;
+        border-bottom: 1px solid $color-gray-100;
+        &--category {
+        }
       }
     }
   }

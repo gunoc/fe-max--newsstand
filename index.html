@@ -7,22 +7,21 @@
     <title>BV Newsstand</title>
     <link rel="stylesheet" href="./src/css/reset.css" />
     <link rel="stylesheet" href="./src/css/main.css" />
+    <script type="module" src="./src/index.ts" defer></script>
   </head>
   <body>
     <div class="root">
-      <div class="header">
+      <!-- <header class="header">
         <div class="header__logo">
-          <a href="">
-            <img
-              class="header__logo-img"
-              src="./src/images/icon-newspaper.png"
-              alt="로고"
-            />
-          </a>
-          <a class="header__logo-link" href="">뉴스스탠드</a>
+          <img
+            class="header__logo-img"
+            src="./src/images/icon-newspaper.png"
+            alt="로고"
+          />
+          <span class="header__logo-title">뉴스스탠드</span>
         </div>
         <span class="header__date">2023. 02. 10 금요일</span>
-      </div>
+      </header> -->
       <div class="rolling">
         <div class="rolling__section rolling__section--left">
           <a class="rolling__press">연합뉴스</a>
@@ -64,7 +63,7 @@
             <img src="./src/images/icon-grid.png" alt="그리드보기" /> -->
           </div>
         </div>
-        <div class="media__grid">
+        <!-- <div class="media__grid">
           <ul class="media__grid--container">
             <li class="media__grid--item">
               <img src="./src/images/media__logo.png" alt="언론사1" />
@@ -139,11 +138,11 @@
               <img src="./src/images/media__logo.png" alt="언론사24" />
             </li>
           </ul>
-        </div>
-        <!-- <div class="media__list">
+        </div> -->
+        <div class="media__list">
           <div class="media__list--field">
             <ul>
-              <li class="media__list--field--category">
+              <li class="media__list--field--category" data="">
                 <div class="progress-bar">
                   <span>종합/경제</span>
                   <span>1/81</span>
@@ -193,9 +192,7 @@
           </div>
           <div class="media__list--press--news">
             <div class="media__list--press--news--main">
-              <div class="media__list--press--news--main-thumbnail">
-                백그라운드
-              </div>
+              <div class="media__list--press--news--main-thumbnail">백그라운드</div>
               <span class="media__list--press--news--main-title">
                 또 국민연금의 몽니…현대百 지주사 불발
               </span>
@@ -226,7 +223,7 @@
               </ul>
             </div>
           </div>
-        </div> -->
+        </div>
       </main>
     </div>
   </body>
