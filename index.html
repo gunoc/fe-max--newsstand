@@ -59,11 +59,9 @@
           <div class="media__view--icon">
             <button type="button" class="media__view--icon--list" title="리스트"></button>
             <button type="button" class="media__view--icon--grid" title="그리드"></button>
-            <!-- <img src="./src/images/icon-list.png" alt="리스트보기" />
-            <img src="./src/images/icon-grid.png" alt="그리드보기" /> -->
           </div>
         </div>
-        <!-- <div class="media__grid" data-newsType="all">
+        <div class="media__grid" data-newsType="all" hidden>
           <ul class="media__grid--container">
             <li class="media__grid--item">
               <img src="./src/images/media__logo.png" alt="언론사1" />
@@ -135,10 +133,16 @@
               <img src="./src/images/media__logo.png" alt="언론사23" />
             </li>
             <li class="media__grid--item">
-              <img src="./src/images/media__logo.png" alt="언론사24" />
+              <!-- <img src="./src/images/media__logo.png" alt="언론사24" /> -->
+              <div class="button__add--container">
+                <div class="button__add">
+                  <img src="./src/images/add-button.png" alt="추가" />
+                  <span>구독하기</span>
+                </div>
+              </div>
             </li>
           </ul>
-        </div> -->
+        </div>
         <div class="media__list" data-newsType="all">
           <ul class="list__field">
             <li class="list__field--category" data-fieldIndex="1" data-Progress="true">
@@ -174,16 +178,22 @@
           <div class="list__press">
             <div class="list__press--info">
               <img class="press-logo" src="./src/images/media__logo.png" alt="로고" />
-              <div>2023.02.10. 18:27 편집</div>
-              <!-- <div> -->
-              <!-- <div>+</div>
-                <span>구독하기</span> -->
-              <img
+              <div class="press-edit-time">2023.02.10. 18:27 편집</div>
+
+              <!-- <img
                 class="btn-subscribe"
                 src="./src/images/subscribeButton.png"
                 alt="구독"
-              />
-              <!-- </div> -->
+              /> -->
+
+              <div class="button__add-list-view">
+                <img src="./src/images/add-button.png" alt="구독" />
+                <span>구독하기</span>
+              </div>
+
+              <div class="button__unsubscribe">
+                <img src="./src/images/unsubscribe-button.png" alt="해지"/>
+              </div>
             </div>
 
             <div class="list__press--news">
@@ -220,6 +230,19 @@
             </div>
           </div>
         </div>
+
+        <div class="alert">
+          <div class="alert__text">
+            <span class="press-name">${}을(를)</span>
+            <span>구독해지하시겠습니까?</span>
+          </div>
+          <div class="alert__button">
+            <button type="button" data-alert="yes">예, 해지합니다</button>
+            <button type="button" data-alert="no ">아니오</button>
+          </div>
+        </div>
+
+        <div class="snackbar">내가 구독한 언론사에 추가되었습니다.</div>
       </main>
     </div>
   </body>

@@ -1,0 +1,18 @@
+@use "../common/variables" as *;
+
+.snackbar {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 286px;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font: $font-body-md;
+  color: $color-white;
+  background-color: $color-primary;
+}

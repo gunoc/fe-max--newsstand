@@ -6,6 +6,9 @@
 @use "common/variables";
 @use "common/mixins";
 
+@use "components/alert";
+@use "components/snackbar";
+@use "components/addBtn";
 @use "components/header";
 @use "components/rolling";
 @use "components/navigator";

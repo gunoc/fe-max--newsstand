@@ -82,6 +82,7 @@ section,
 summary,
 time,
 mark,
+button,
 audio,
 video {
   margin: 0;
@@ -120,7 +121,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 table {
