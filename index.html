@@ -26,23 +26,23 @@
         <div class="rolling__section rolling__section--left">
           <a class="rolling__press">연합뉴스</a>
           <ul>
-            <li class="rolling__title" data="1">내일 누리호 발사…날씨 '이상 무'</li>
-            <li class="rolling__title" data="2">2</li>
-            <li class="rolling__title" data="3">3</li>
-            <li class="rolling__title" data="4">4</li>
-            <li class="rolling__title" data="5">5</li>
+            <li class="rolling__title" data-roll="1">내일 누리호 발사…날씨 '이상 무'</li>
+            <li class="rolling__title" data-roll="2">2</li>
+            <li class="rolling__title" data-roll="3">3</li>
+            <li class="rolling__title" data-roll="4">4</li>
+            <li class="rolling__title" data-roll="5">5</li>
           </ul>
         </div>
         <div class="rolling__section rolling__section--right">
           <a class="rolling__press">연합뉴스</a>
           <ul>
-            <li class="rolling__title">
+            <li class="rolling__title" data-roll="6">
               [속보] 尹 "공공질서 무너뜨린 민노총 집회 용납 어려워"
             </li>
-            <li class="rolling__title" data="7">7</li>
-            <li class="rolling__title" data="8">8</li>
-            <li class="rolling__title" data="9">9</li>
-            <li class="rolling__title" data="10">10</li>
+            <li class="rolling__title" data-roll="7">7</li>
+            <li class="rolling__title" data-roll="8">8</li>
+            <li class="rolling__title" data-roll="9">9</li>
+            <li class="rolling__title" data-roll="10">10</li>
           </ul>
         </div>
       </div>
@@ -140,84 +140,80 @@
           </ul>
         </div> -->
         <div class="media__list">
-          <div class="media__list--field">
-            <ul>
-              <li class="media__list--field--category" data="">
-                <div class="progress-bar">
-                  <span>종합/경제</span>
-                  <span>1/81</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>방송/통신</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>IT</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>영자지</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>스포츠/연예</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>매거진/전문지</span>
-                </div>
-              </li>
-              <li class="media__list--field--category">
-                <div class="progress-bar">
-                  <span>지역</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="media__list--press--news">
-            <div class="media__list--press--info">
-              <img src="./src/images/media__logo.png" alt="로고" />
-              <span>2023.02.10. 18:27 편집</span>
-              <div>
-                <div>+</div>
-                <span>구독하기</span>
+          <ul class="list__field">
+            <li class="list__field--category" data-fieldIndex="1" data-Progress="true">
+              <div class="progress-bar"></div>
+              <span>종합/경제</span>
+              <span class="list__field--category--count">1 / 81</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="2" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>방송/통신</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="3" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>IT</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="4" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>영자지</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="5" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>스포츠/연예</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="6" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>매거진/전문지</span>
+            </li>
+            <li class="list__field--category" data-fieldIndex="7" data-Progress="false">
+              <div class="progress-bar"></div>
+              <span>지역</span>
+            </li>
+          </ul>
+          <div class="list__press">
+            <div class="list__press--info">
+              <img class="press-logo" src="./src/images/media__logo.png" alt="로고" />
+              <div>2023.02.10. 18:27 편집</div>
+              <!-- <div> -->
+              <!-- <div>+</div>
+                <span>구독하기</span> -->
+              <img
+                class="btn-subscribe"
+                src="./src/images/subscribeButton.png"
+                alt="구독"
+              />
+              <!-- </div> -->
+            </div>
+
+            <div class="list__press--news">
+              <div class="list__press--news--main">
+                <div class="list__press--news--main-thumbnail"></div>
+                <span class="list__press--news--main-title">
+                  또 국민연금의 몽니…현대百 지주사 불발 또 국민연금의 몽니…현대百 지주사
+                  불발
+                </span>
               </div>
-            </div>
-          </div>
-          <div class="media__list--press--news">
-            <div class="media__list--press--news--main">
-              <div class="media__list--press--news--main-thumbnail">백그라운드</div>
-              <span class="media__list--press--news--main-title">
-                또 국민연금의 몽니…현대百 지주사 불발
-              </span>
-            </div>
-            <div class="media__list--press--news--sub">
-              <ul>
-                <li class="media__list--press--news--sub-title">
+              <ul class="list__press--news--sub">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title">
                   "위스키 사려고 이틀 전부터 줄 섰어요"
                 </li>
-                <li class="media__list--press--news--sub-title">
+                <li class="list__press--news--sub-title caption">
                   서울경제 언론사에서 직접 편집한 뉴스입니다.
                 </li>
               </ul>
