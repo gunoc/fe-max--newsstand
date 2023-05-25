@@ -1,41 +1,23 @@
-import { createElement } from "../../utils/createDOM";
+import { createComponent } from "../../utils/createDOM";
 
 export function createHeader() {
-  const header = createElement({
-    tagName: "header",
-    attributes: {
-      className: "header",
-    },
-  });
-
   const headerLogo = createHeaderLogo();
-  const headerDate = createHeaderDate();
-
   headerLogo.addEventListener("click", () => {
     location.reload();
   });
 
-  header.append(headerLogo, headerDate);
+  const headerDate = createHeaderDate();
+  const header = createComponent({
+    tagName: "header",
+    content: [headerLogo, headerDate],
+    attributes: { className: "header" },
+  });
 
   return header;
 }
 
 function createHeaderLogo() {
-  const headerLogo = createElement({
-    tagName: "div",
-    attributes: {
-      className: "header__logo",
-    },
-  });
-  const logoImg = createHeaderLogoImg();
-  const logoTitle = createHeaderLogoTitle();
-  headerLogo.append(logoImg, logoTitle);
-
-  return headerLogo;
-}
-
-function createHeaderLogoImg() {
-  const headerLogoImg = createElement({
+  const logoImg = createComponent({
     tagName: "img",
     attributes: {
       className: "header__logo--img",
@@ -43,30 +25,27 @@ function createHeaderLogoImg() {
       alt: "로고",
     },
   });
-  return headerLogoImg;
-}
 
-function createHeaderLogoTitle() {
-  const headerLogoTitle = createElement({
+  const logoTitle = createComponent({
     tagName: "span",
-    attributes: {
-      className: "header__logo-title",
-      innerHTML: "뉴스스탠드",
-    },
+    content: "뉴스스탠드",
+    attributes: { className: "header__logo-title" },
   });
-  return headerLogoTitle;
+
+  return createComponent({
+    tagName: "div",
+    content: [logoImg, logoTitle],
+    attributes: { className: "header__logo" },
+  });
 }
 
 function createHeaderDate() {
   const systemDate = createSystemDate();
-  const headerDate = createElement({
+  return createComponent({
     tagName: "span",
-    attributes: {
-      className: "header__date",
-      innerHTML: systemDate,
-    },
+    content: systemDate,
+    attributes: { className: "header__date" },
   });
-  return headerDate;
 }
 
 function createSystemDate(): string {
@@ -77,7 +56,7 @@ function createSystemDate(): string {
     day: "2-digit",
     weekday: "long",
   };
-  const formattedDate = date.toLocaleString("ko-KR", options).replace(/\./g, ". ");
 
+  const formattedDate = date.toLocaleString("ko-KR", options).replace(/\./g, ". ");
   return formattedDate;
 }

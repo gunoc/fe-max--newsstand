@@ -1,4 +1,10 @@
 export type ElementProps = {
   tagName: string;
-  attributes?: { [key: string]: string };
+  attributes?: Record<string, any>;
 };
+
+export interface ComponentOptions {
+  tagName: string;
+  content?: string | Node[] | null;
+  attributes?: Record<string, any>;
+}
