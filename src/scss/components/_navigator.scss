@@ -6,13 +6,16 @@
   width: 1073px;
   display: flex;
   justify-content: space-between;
+
   > button {
     cursor: pointer;
     padding: 20px 12px;
   }
+
   &--prev {
     background: url(../images/LeftButton.png) no-repeat center / cover;
   }
+
   &--next {
     background: url(../images/RightButton.png) no-repeat center / cover;
   }

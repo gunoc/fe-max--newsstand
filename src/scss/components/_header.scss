@@ -10,11 +10,13 @@
     justify-content: space-between;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
     &-title {
       font: $font-display;
       color: $color-black;
     }
   }
+
   &__date {
     justify-content: center;
     align-items: center;

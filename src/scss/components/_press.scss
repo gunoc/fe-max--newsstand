@@ -92,6 +92,7 @@
     justify-content: space-between;
     font: $font-body-sm;
     color: $color-gray-300;
+    cursor: pointer;
 
     .progress-bar {
       position: absolute;
@@ -132,6 +133,9 @@
     //   // padding: 12px 37px ;
     //   // background: url(../images/subscribeButton.png) no-repeat center / cover;
     // }
+    > img {
+      cursor: pointer;
+    }
 
     > div {
       height: 24px;
@@ -147,21 +151,32 @@
   &--news {
     display: flex;
     gap: 32px;
+
     &--main {
       width: 320px;
       height: 200px;
     }
+
     &--main-thumbnail {
+      cursor: pointer;
       margin-bottom: 16px;
       border: 1px solid $color-gray-100;
       height: 200px;
 
       background: url(../images/Thumbnail-all.png) no-repeat center / cover;
+      &:hover + span {
+        text-decoration: underline;
+      }
     }
 
     &--main-title {
       font: $font-body-md;
       color: $color-black;
+
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &--sub {
@@ -171,8 +186,12 @@
       justify-content: space-between;
       // gap: 16px;
       &-title {
+        cursor: pointer;
         font: $font-title-md;
         color: $color-gray-500;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -180,4 +199,9 @@
 .caption {
   font: $font-body-sm;
   color: $color-gray-200;
+  cursor: auto;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
