@@ -1,6 +1,6 @@
 import { ElementProps, ComponentOptions } from "../types/types";
 
-export function createElement({ tagName, attributes = {} }: ElementProps): any {
+export function createElement({ tagName, attributes = {} }: ElementProps): HTMLElement {
   const element = document.createElement(tagName);
 
   Object.entries(attributes).forEach(([key, value]) => {
