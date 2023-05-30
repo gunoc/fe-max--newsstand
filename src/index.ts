@@ -9,7 +9,6 @@ import mock from "../src/data/rolling.json";
   const header = createHeader();
   const rolling = createRolling();
   const root = document.querySelector(".root");
-  // root?.insertAdjacentElement("afterbegin", header);
 
   root?.append(header, rolling);
 })();
