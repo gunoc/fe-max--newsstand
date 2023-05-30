@@ -1,14 +1,11 @@
-import { createHeader } from "./components/Header/header";
+import { createHeader } from "./components/Header/Header";
 import { createRolling } from "./components/Rolling/RollingContainer";
 
-import mock from "../src/data/rolling.json";
-
-(function () {
-  console.log(mock);
-
+async function app() {
   const header = createHeader();
-  const rolling = createRolling();
+  const rolling = await createRolling();
   const root = document.querySelector(".root");
 
   root?.append(header, rolling);
-})();
+}
+app();

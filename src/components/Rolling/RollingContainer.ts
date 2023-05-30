@@ -1,22 +1,24 @@
-import rollData from "../../data/rolling.json";
-// import { ElementProps, ComponentOptions } from "../../types/types";
+// import rollData from "../../../server/data/rolling.json";
 import { createComponent } from "../../utils/createDOM";
-import { viewActionCreator } from "../../actions/actions";
+import { viewActionCreator, fetchActionCreator } from "../../actions/actions";
 import {
   getLeftIndexState,
   getLeftIntervalState,
   getRightIndexState,
   getRightIntervalState,
+  getRollDataState,
 } from "../../store/rollingStore";
 
 let leftInterval;
 let rightInterval;
 
-export function createRolling() {
-  // fetchActions.rollingData()
+export async function createRolling() {
+  await fetchActionCreator.fetchRollingData();
 
-  const rollLeft = createRollElement("left");
-  const rollRight = createRollElement("right");
+  const rollData = getRollDataState();
+
+  const rollLeft = createRollElement("left", rollData);
+  const rollRight = createRollElement("right", rollData);
 
   const rollingContainer = createComponent({
     tagName: "div",
@@ -30,9 +32,9 @@ export function createRolling() {
   return rollingContainer;
 }
 
-function createRollElement(direction: string) {
+function createRollElement(direction: string, payload) {
   const pressName = createPressName();
-  const titleListContainer = createTitleListContainer(direction);
+  const titleListContainer = createTitleListContainer(direction, payload);
 
   const rollingSection = createComponent({
     tagName: "div",
@@ -53,8 +55,8 @@ function createPressName() {
   });
 }
 
-function createTitleListContainer(direction: string) {
-  const titleList = createTitleList(direction);
+function createTitleListContainer(direction: string, payload) {
+  const titleList = createTitleList(direction, payload);
   titleList[0].style.transform = "translateY(0)";
   return createComponent({
     tagName: "ul",
@@ -62,7 +64,9 @@ function createTitleListContainer(direction: string) {
   });
 }
 
-function createTitleList(direction: string) {
+function createTitleList(direction: string, payload) {
+  const rollData = payload;
+
   if (direction === "left") {
     const leftData = rollData.leftRollData;
     return createTitleListArr(leftData);

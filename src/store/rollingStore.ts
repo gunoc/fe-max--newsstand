@@ -7,10 +7,14 @@ const rollingState = {
   rightInterval: true,
   leftIndex: 0,
   rightIndex: 0,
+  rollData: null,
 };
 
 const setIntervalListener = dispatcher.register(function (action) {
   switch (action.type) {
+    case "LOAD_ROLLING_DATA":
+      rollingState.rollData = action.payload;
+      break;
     case "START_LEFT_INTERVAL":
       rollingState.leftInterval = true;
       break;
@@ -29,6 +33,7 @@ const setIntervalListener = dispatcher.register(function (action) {
     case "RIGHT_INDEX":
       changeRightIndex();
       break;
+
     default:
       break;
   }
@@ -46,12 +51,17 @@ export function getLeftIndexState(): number {
 export function getRightIndexState(): number {
   return rollingState.rightIndex;
 }
+export function getRollDataState() {
+  return rollingState.rollData;
+}
+
 function changeLeftIndex() {
   rollingState.leftIndex += 1;
   if (rollingState.leftIndex === 5) {
     rollingState.leftIndex = 0;
   }
 }
+
 function changeRightIndex() {
   rollingState.rightIndex += 1;
   if (rollingState.rightIndex === 5) {

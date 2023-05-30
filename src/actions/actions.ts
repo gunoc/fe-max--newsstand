@@ -1,15 +1,17 @@
-// import { createDispatcher } from "../dispatcher/dispatcher";
 import { dispatcher } from "../store/rollingStore";
 
-export interface actionCreator {
-  // tagName: string;
-  // content?: string | Node[] | null;
-  // attributes?: Record<string, any>;
-}
+// 액션 타입 상수화 하기
 
-// const dispatcher = createDispatcher();
+export interface actionCreator {}
 
-export const fetchActionCreator: actionCreator = {};
+export const fetchActionCreator = {
+  async fetchRollingData() {
+    const response = await fetch("http://localhost:3000/rolling");
+    const data = await response.json();
+
+    dispatcher.dispatch({ type: "LOAD_ROLLING_DATA", payload: data });
+  },
+};
 export const viewActionCreator = {
   startLeftInterval() {
     dispatcher.dispatch({ type: "START_LEFT_INTERVAL" });
