@@ -15,10 +15,8 @@ let rightInterval;
 export async function createRolling() {
   await fetchActionCreator.fetchRollingData();
 
-  const rollData = getRollDataState();
-
-  const rollLeft = createRollElement("left", rollData);
-  const rollRight = createRollElement("right", rollData);
+  const rollLeft = createRollElement("left");
+  const rollRight = createRollElement("right");
 
   const rollingContainer = createComponent({
     tagName: "div",
@@ -32,9 +30,9 @@ export async function createRolling() {
   return rollingContainer;
 }
 
-function createRollElement(direction: string, payload) {
+function createRollElement(direction: string) {
   const pressName = createPressName();
-  const titleListContainer = createTitleListContainer(direction, payload);
+  const titleListContainer = createTitleListContainer(direction);
 
   const rollingSection = createComponent({
     tagName: "div",
@@ -55,8 +53,8 @@ function createPressName() {
   });
 }
 
-function createTitleListContainer(direction: string, payload) {
-  const titleList = createTitleList(direction, payload);
+function createTitleListContainer(direction: string) {
+  const titleList = createTitleList(direction);
   titleList[0].style.transform = "translateY(0)";
   return createComponent({
     tagName: "ul",
@@ -64,8 +62,8 @@ function createTitleListContainer(direction: string, payload) {
   });
 }
 
-function createTitleList(direction: string, payload) {
-  const rollData = payload;
+function createTitleList(direction: string) {
+  const rollData = getRollDataState();
 
   if (direction === "left") {
     const leftData = rollData.leftRollData;
