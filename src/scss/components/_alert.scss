@@ -1,0 +1,46 @@
+@use "../common/variables" as *;
+
+.alert {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 320px;
+  height: 140px;
+  background: $color-white;
+
+  border: 1px solid $color-gray-100;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 92px;
+    > span {
+      font: $font-title-md;
+      color: $color-gray-400;
+    }
+  }
+
+  &__button {
+    display: flex;
+    border-top: 1px solid $color-gray-100;
+
+    > button {
+      flex: 1;
+      height: 48px;
+      background: $color-off-white;
+      font: $font-body-md;
+      color: $color-black;
+      cursor: pointer;
+    }
+
+    > button:first-of-type {
+      border-right: 1px solid $color-gray-100;
+    }
+  }
+}
