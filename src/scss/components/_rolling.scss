@@ -14,6 +14,10 @@
     box-sizing: border-box;
     border: 1px solid $color-gray-100;
     background-color: $color-off-white;
+
+    /* roll-animation */
+    overflow: hidden;
+    position: relative;
   }
   &__press {
     white-space: nowrap;
@@ -28,8 +32,12 @@
     font: $font-body-sm;
     color: $color-gray-500;
     cursor: pointer;
+
     &:hover {
       text-decoration: underline;
     }
+    /* roll-animation */
+    position: absolute;
+    transform: translateY(37px);
   }
 }
