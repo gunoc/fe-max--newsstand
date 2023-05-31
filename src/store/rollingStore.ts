@@ -1,6 +1,6 @@
 import { createDispatcher } from "../dispatcher/dispatcher";
 
-const dispatcher = createDispatcher();
+export const dispatcher = createDispatcher();
 
 const rollingState = {
   leftInterval: true,
@@ -68,5 +68,3 @@ function changeRightIndex() {
     rollingState.rightIndex = 0;
   }
 }
-
-export { dispatcher };
