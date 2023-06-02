@@ -1,3 +1,5 @@
+// rollingStore 따로 두지 말고 스토어 하나로 통일하기
+
 import { createDispatcher } from "../dispatcher/dispatcher";
 
 export const dispatcher = createDispatcher();
