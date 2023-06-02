@@ -15,6 +15,8 @@ let rightInterval;
 export async function createRolling() {
   await fetchActionCreator.fetchRollingData();
 
+  // subscribe
+
   const rollLeft = createRollElement("left");
   const rollRight = createRollElement("right");
 
