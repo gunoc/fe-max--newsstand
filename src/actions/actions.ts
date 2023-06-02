@@ -12,6 +12,7 @@ export const fetchActionCreator = {
     dispatcher.dispatch({ type: "LOAD_ROLLING_DATA", payload: data });
   },
 };
+
 export const viewActionCreator = {
   startLeftInterval() {
     dispatcher.dispatch({ type: "START_LEFT_INTERVAL" });
@@ -32,5 +33,3 @@ export const viewActionCreator = {
     dispatcher.dispatch({ type: "RIGHT_INDEX" });
   },
 };
-
-console.log(viewActionCreator);
