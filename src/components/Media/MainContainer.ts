@@ -1,16 +1,18 @@
 import { createComponent } from "../../utils/createDOM";
+import { grid } from "./GridAll/GridAll";
 import { navigator } from "./Shared/Navigator";
 
-export function createMainContainer() {
+export async function createMainContainer() {
   const $mainContainer = createComponent({
     tagName: "div",
     attributes: { className: "media" },
   });
 
-  // const $navigator = createMainNavigator();
   // const $mediaContainer = createMediaContainer();
+  const $grid = await grid();
+  const $navigator = navigator();
 
-  // $mainContainer.append($navigator);
+  $mainContainer.append(...$navigator, $grid);
 
   return $mainContainer;
 }
