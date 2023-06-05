@@ -53,7 +53,7 @@ function mediaDisplayReducer(state = initialDisplayState, action) {
 
 function subscriptionReducer(state = subscriptionState, action) {
   switch (action.type) {
-    case "LOAD_GRID_DATA":
+    case "LOAD_SUBSCRIPTION_DATA":
       return {
         ...state,
         data: action.payload,
@@ -67,9 +67,10 @@ function subscriptionReducer(state = subscriptionState, action) {
 function mediaDataReducer(state = mediaDataState, action) {
   switch (action.type) {
     case "LOAD_GRID_DATA":
+      return log(state, action);
       return {
-        ...state,
-        data: action.payload,
+        // ...state,
+        // data: action.payload,
       };
 
     default:
@@ -99,3 +100,11 @@ export const rootReducer = combineReducers({
   subscription: subscriptionReducer,
   display: mediaDisplayReducer,
 });
+
+function log(state, action) {
+  console.log(action.payload);
+  return {
+    ...state,
+    data: action.payload,
+  };
+}
