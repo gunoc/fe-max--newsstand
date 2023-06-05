@@ -1,5 +1,5 @@
 export function createStore(reducer, initialState = {}) {
-  const state = initialState;
+  let state = initialState;
   let isDispatching = false;
   const listeners = [];
 
@@ -12,6 +12,7 @@ export function createStore(reducer, initialState = {}) {
     try {
       state = reducer(state, action);
       listeners.forEach(function (listener) {
+        console.log(listener);
         listener(action);
       });
     } finally {
@@ -21,6 +22,8 @@ export function createStore(reducer, initialState = {}) {
 
   const subscribe = function (listener) {
     listeners.push(listener);
+    console.log(listeners);
+
     return function () {
       const index = listeners.indexOf(listener);
       listeners.splice(index, 1);
@@ -28,6 +31,8 @@ export function createStore(reducer, initialState = {}) {
   };
 
   const getState = function () {
+    console.log(state);
+
     return Object.freeze({ ...state });
   };
 
