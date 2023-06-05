@@ -58,6 +58,7 @@
   }
 
   &__grid--item {
+    box-sizing: border-box;
     position: relative;
 
     cursor: pointer;
@@ -67,6 +68,11 @@
 
     border-right: 1px solid $color-gray-100;
     border-bottom: 1px solid $color-gray-100;
+
+    > img {
+      width: auto;
+      height: 20px;
+    }
   }
 
   /* allPress-list */
