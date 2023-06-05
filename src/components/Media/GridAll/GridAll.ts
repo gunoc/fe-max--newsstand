@@ -20,17 +20,16 @@ export function createGridAll() {
 
 // 초기 렌더링
 // 버튼을 누르면 이곳이 업데이트 돼야함
-// export function renderItem(){}
+async function renderGridItems() {
+  const allData = store.getState().mediaData.data;
+  console.log(allData);
+}
 
 export async function grid() {
-  await fetchActionCreator.fetchGridData();
-
   const $grid = createGridAll();
-  // subscribe();
+  await fetchActionCreator.fetchGridData();
+  store.subscribe(renderGridItems);
   // const allData = store.getState().mediaData.data;
-  const allData = store.getState().mediaData.data;
-
-  console.log(allData);
 
   return $grid;
 }
