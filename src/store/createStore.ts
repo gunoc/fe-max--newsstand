@@ -1,5 +1,5 @@
 export function createStore(reducer, initialState = {}) {
-  const state = initialState;
+  let state = initialState;
   let isDispatching = false;
   const listeners = [];
 
@@ -28,6 +28,8 @@ export function createStore(reducer, initialState = {}) {
   };
 
   const getState = function () {
+    console.log(state);
+
     return Object.freeze({ ...state });
   };
 

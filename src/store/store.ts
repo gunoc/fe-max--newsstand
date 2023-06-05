@@ -3,6 +3,7 @@
 import { createStore } from "./createStore";
 import { rootReducer } from "./reducer/reducer";
 
-const store = createStore(rootReducer);
+export const store = createStore(rootReducer);
+// const store = createStore(rootReducer);
 
-export const { dispatch, subscribe, getState } = store;
+// export const { dispatch, subscribe, getState } = store;

@@ -53,7 +53,7 @@ function mediaDisplayReducer(state = initialDisplayState, action) {
 
 function subscriptionReducer(state = subscriptionState, action) {
   switch (action.type) {
-    case "LOAD_GRID_DATA":
+    case "LOAD_SUBSCRIPTION_DATA":
       return {
         ...state,
         data: action.payload,
