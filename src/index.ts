@@ -1,15 +1,15 @@
-import { createHeader } from "./components/Header/header";
+import { createHeader } from "./components/Header/Header";
+import { createMainContainer } from "./components/Media/MainContainer";
+import { navigator } from "./components/Media/Shared/Navigator";
 import { createRolling } from "./components/Rolling/RollingContainer";
 
-import mock from "../src/data/rolling.json";
-
-(function () {
-  console.log(mock);
-
-  const header = createHeader();
-  const rolling = createRolling();
+async function app() {
+  const $header = createHeader();
+  const $rolling = await createRolling();
+  const $main = createMainContainer();
+  const $navigator = navigator();
   const root = document.querySelector(".root");
-  // root?.insertAdjacentElement("afterbegin", header);
 
-  root?.append(header, rolling);
-})();
+  root?.append($header, $rolling, $main, ...$navigator);
+}
+app();
