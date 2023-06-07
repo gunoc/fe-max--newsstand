@@ -31,8 +31,6 @@ export function createStore(reducer, initialState = {}) {
   };
 
   const getState = function () {
-    console.log(state);
-
     return Object.freeze({ ...state });
   };
 

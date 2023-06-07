@@ -1,4 +1,3 @@
-// import { subscribe } from "../../../store/store";
 import { fetchActionCreator } from "../../../actions/mediaActions";
 import { store } from "../../../store/store";
 import { createComponent } from "../../../utils/createDOM";
@@ -9,31 +8,14 @@ export function createGridAll() {
     attributes: { className: "media__grid--container" },
   });
 
-  const $grid = createComponent({
-    tagName: "div",
-    attributes: { className: "media__grid" },
-  });
-
-  $grid.append($gridContainer);
-  return $grid;
-}
-
-function updateGridItems(grid, allData) {
-  const $gridContainer = grid.querySelector(".media__grid--container");
-
-  const itemArray = [];
-
-  for (let index = 0; index < 24; index++) {
-    const pressLogo = allData[index].src;
-    const pressName = allData[index].alt;
-
+  for (let i = 0; i < 24; i++) {
     const $item = createComponent({
       tagName: "li",
       attributes: { className: "media__grid--item" },
     });
     const $pressLogo = createComponent({
       tagName: "img",
-      attributes: { src: pressLogo, alt: pressName },
+      attributes: { src: "", alt: "" },
     });
     const $buttonLayer = createComponent({
       tagName: "div",
@@ -46,32 +28,49 @@ function updateGridItems(grid, allData) {
     </div>
     `;
     $item.append($pressLogo, $buttonLayer);
-    itemArray.push($item);
+    $gridContainer.append($item);
   }
 
-  $gridContainer.append(...itemArray);
+  const $grid = createComponent({
+    tagName: "div",
+    attributes: { className: "media__grid" },
+  });
 
-  // return $gridContainer;
+  $grid.append($gridContainer);
+  return $grid;
 }
-// 초기 렌더링
-// 버튼을 누르면 이곳이 업데이트 돼야함
-function renderGridItems(grid) {
-  // const $grid = createGridAll();
-  const allData = store.getState().mediaData.data;
-  console.log(store.getState());
 
-  updateGridItems(grid, allData);
-  // updateGridItems($grid, allData);
+function updateGridItems(grid, currentPageData) {
+  const $gridItems = grid.querySelectorAll(".media__grid--item");
+
+  $gridItems.forEach((item, index) => {
+    const img = item.querySelector("img");
+    img.setAttribute("src", currentPageData[index].src);
+    img.setAttribute("alt", currentPageData[index].alt);
+  });
+}
+
+function renderGridItems($grid) {
+  const allData = store.getState().mediaData.data;
+  const pageIndex = store.getState().display.currentPage;
+  const itemsPerPage = 24;
+  const startIndex = pageIndex * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentPageData = allData.slice(startIndex, endIndex);
+
+  updateGridItems($grid, currentPageData);
 }
 
 export async function grid() {
   const $grid = createGridAll();
   store.subscribe(renderGridItems.bind(null, $grid));
-  console.log(renderGridItems.bind(null, $grid));
 
   await fetchActionCreator.fetchGridData();
-
-  console.log($grid);
-
+  $grid.addEventListener("mouseover", log);
   return $grid;
+}
+
+function log(e) {
+  console.log(e.target);
 }

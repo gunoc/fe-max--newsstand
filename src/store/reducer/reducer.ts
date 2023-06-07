@@ -38,16 +38,29 @@ function mediaDisplayReducer(state = initialDisplayState, action) {
     case "CLICK_PREV_BUTTON":
       return {
         ...state,
-        //0일때 3일때는?
-        currentPage: state.currentPage - 1,
+        currentPage: state.currentPage > 0 ? state.currentPage - 1 : state.currentPage,
       };
     case "CLICK_NEXT_BUTTON":
       return {
         ...state,
-        currentPage: state.currentPage - 1,
+        currentPage: state.currentPage < 3 ? state.currentPage + 1 : state.currentPage,
       };
     default:
       return state;
+  }
+}
+
+function limitPageNavigation(actionType, state) {
+  if (actionType === "CLICK_PREV_BUTTON") {
+    return {
+      ...state,
+      currentPage: state.currentPage > 0 ? state.currentPage - 1 : state.currentPage,
+    };
+  } else if (actionType === "CLICK_NEXT_BUTTON") {
+    return {
+      ...state,
+      currentPage: state.currentPage < 3 ? state.currentPage + 1 : state.currentPage,
+    };
   }
 }
 
