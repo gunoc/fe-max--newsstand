@@ -2,7 +2,6 @@ import { displayActionCreator } from "../../../actions/mediaActions";
 import { store } from "../../../store/store";
 import { createComponent } from "../../../utils/createDOM";
 
-// 초기 렌더링시에 0이면 왼쪽 버튼 나오면 안됨
 function createMainNavigator() {
   const $mediaViewText = createComponent({
     tagName: "div",
@@ -74,12 +73,6 @@ export function initNavigator() {
 }
 
 function handlePageChange(state) {
-  // const currentPage = state.display.currentPage;
-  // const subscribedItemCount = state.subscription.currentItem;
-  // const subscribedPageCount = state.subscription.pageCount;
-  // const isAllPress = state.display.isAllPress;
-  // const isGrid = state.display.isGrid;
-
   const pageState = {
     currentPage: state.display.currentPage,
     subscribedItemCount: state.subscription.currentItem,
@@ -90,84 +83,80 @@ function handlePageChange(state) {
     isGrid: state.display.isGrid,
   };
 
-  updateNextButtonVisibility(pageState, displayState);
-  updatePrevButtonVisibility(pageState, displayState);
+  updateButtonVisibility(
+    ".btn__box--next",
+    shouldHideNextButton,
+    pageState,
+    displayState
+  );
+  updateButtonVisibility(
+    ".btn__box--prev",
+    shouldHidePrevButton,
+    pageState,
+    displayState
+  );
 }
 
-function updateNextButtonVisibility(pageState, displayState) {
+function shouldHideNextButton(pageState, displayState) {
   const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
-  const { isAllPress, isGrid } = displayState;
-
-  const $nextButton = document.querySelector(".btn__box--next");
-  console.log(currentPage, subscribedItemCount);
+  const { isAllPress } = displayState;
 
   if (isAllPress) {
-    if (currentPage === 3) {
-      $nextButton.style.display = "none";
-    } else {
-      $nextButton.style.display = "";
-    }
+    return currentPage === 3;
   } else {
-    if (
+    return (
       (currentPage === 0 && subscribedItemCount < 25) ||
       currentPage === subscribedPageCount
-    ) {
-      $nextButton.style.display = "none";
-    } else {
-      $nextButton.style.display = "";
-    }
+    );
   }
 }
 
-function updatePrevButtonVisibility(pageState, displayState) {
-  const { currentPage, subscribedItemCount } = pageState;
-  const { isAllPress, isGrid } = displayState;
+function shouldHidePrevButton(pageState, displayState) {
+  const { currentPage } = pageState;
+  const { isAllPress } = displayState;
 
-  const $prevButton = document.querySelector(".btn__box--prev");
-
-  if (isAllPress) {
-    if (currentPage === 0) {
-      $prevButton.style.display = "none";
-    } else {
-      $prevButton.style.display = "";
-    }
-  } else {
-    if (currentPage === 0) {
-      $prevButton.style.display = "none";
-    } else {
-      $prevButton.style.display = "";
-    }
-  }
+  return currentPage === 0;
 }
 
+function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
+  const $button = document.querySelector(selector);
+  const shouldHideButton = shouldHide(pageState, displayState);
+
+  $button.style.display = shouldHideButton ? "none" : "";
+}
 function handleViewOption(e) {
   if (e.target.nodeName !== "BUTTON") {
     return;
   }
-  const viewAll = e.target.classList.contains("media__view--text--all");
-  const viewSubscription = e.target.classList.contains("media__view--text--subsciption");
-  const viewGrid = e.target.classList.contains("media__view--icon--grid");
-  const viewList = e.target.classList.contains("media__view--icon--list");
+  const targetClassList = e.target.classList;
+  const viewAll = targetClassList.contains("media__view--text--all");
+  const viewSubscription = targetClassList.contains("media__view--text--subsciption");
+  const viewGrid = targetClassList.contains("media__view--icon--grid");
+  const viewList = targetClassList.contains("media__view--icon--list");
 
   if (viewAll) {
     displayActionCreator.clickAllPressView();
-    e.target.classList.add("active");
-    e.target.nextElementSibling.classList.remove("active");
+    setActiveButtonState(e.target, e.target.nextElementSibling);
   }
   if (viewSubscription) {
     displayActionCreator.clickSubscriptionView();
-    e.target.classList.add("active");
-    e.target.previousElementSibling.classList.remove("active");
+    setActiveButtonState(e.target, e.target.previousElementSibling);
   }
 }
 
-function pageEventHandler(e) {
-  const prev = e.target.classList.contains("btn__box--prev");
-  const next = e.target.classList.contains("btn__box--next");
+function setActiveButtonState(activeButton, inactiveButton) {
+  activeButton.classList.add("active");
+  inactiveButton.classList.remove("active");
+}
 
+function pageEventHandler(e) {
   if (e.target.nodeName !== "BUTTON") {
     return;
   }
+
+  const prev = e.target.classList.contains("btn__box--prev");
+  const next = e.target.classList.contains("btn__box--next");
+
   if (prev) {
     displayActionCreator.clickPrevButton();
   }
