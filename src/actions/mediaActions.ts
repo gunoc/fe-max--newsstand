@@ -1,4 +1,5 @@
 import { store } from "../store/store";
+import { shuffleArray } from "../utils/shuffleArray";
 
 export const fetchActionCreator = {
   async fetchGridData() {
@@ -8,14 +9,6 @@ export const fetchActionCreator = {
     store.dispatch({ type: "LOAD_GRID_DATA", payload: shuffledData });
   },
 };
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
 
 export const displayActionCreator = {
   clickAllPressView() {
@@ -48,5 +41,13 @@ export const displayActionCreator = {
 
   clickRemoveSubscribe(payload) {
     store.dispatch({ type: "CLICK_REMOVE_SUBSCRIBE", payload });
+  },
+
+  displayAlert(payload) {
+    store.dispatch({ type: "DISPLAY_ALERT", payload });
+  },
+
+  hideAlert() {
+    store.dispatch({ type: "HIDE_ALERT" });
   },
 };
