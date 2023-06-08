@@ -2,7 +2,6 @@ const initialDisplayState = {
   isAllPress: true,
   isGrid: true,
   currentPage: 0,
-  currentItem: 0, //24개 이상일때늘어나게?
 };
 
 const mediaDataState = {
@@ -13,6 +12,8 @@ const subscriptionState = {
   subscribedPresses: [],
   pageCount: 0,
   currentItem: 0,
+  displayAlert: false,
+  removeItem: null,
 };
 
 function mediaDisplayReducer(state = initialDisplayState, action) {
@@ -90,6 +91,19 @@ function subscriptionReducer(state = subscriptionState, action) {
         pageCount: newPageCount,
       };
 
+    case "DISPLAY_ALERT":
+      return {
+        ...state,
+        displayAlert: true,
+        removeItem: action.payload,
+      };
+
+    case "HIDE_ALERT":
+      return {
+        ...state,
+        displayAlert: false,
+      };
+
     case "CLICK_REMOVE_SUBSCRIBE":
       const newSubscribedPresses = state.subscribedPresses.filter(
         (press) => press.alt !== action.payload.alt
@@ -103,6 +117,7 @@ function subscriptionReducer(state = subscriptionState, action) {
         currentItem: newRemoveItemCount < 0 ? 0 : newRemoveItemCount,
         pageCount: newRemovePageCount < 0 ? 0 : newRemovePageCount,
       };
+
     default:
       return state;
   }
