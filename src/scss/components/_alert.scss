@@ -14,6 +14,9 @@
 
   border: 1px solid $color-gray-100;
 
+  filter: drop-shadow(0px 4px 2px rgba(20, 33, 43, 0.02))
+    drop-shadow(0px 2px 18px rgba(20, 33, 43, 0.08));
+
   &__text {
     display: flex;
     flex-direction: column;
@@ -23,6 +26,9 @@
     > span {
       font: $font-title-md;
       color: $color-gray-400;
+    }
+    .press-name {
+      color: $color-black;
     }
   }
 
@@ -43,4 +49,8 @@
       border-right: 1px solid $color-gray-100;
     }
   }
+}
+
+.hide {
+  display: none;
 }
