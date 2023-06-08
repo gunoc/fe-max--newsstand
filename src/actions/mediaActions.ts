@@ -4,10 +4,18 @@ export const fetchActionCreator = {
   async fetchGridData() {
     const response = await fetch("http://localhost:3000/grid");
     const data = await response.json();
-
-    store.dispatch({ type: "LOAD_GRID_DATA", payload: data });
+    const shuffledData = shuffleArray(data);
+    store.dispatch({ type: "LOAD_GRID_DATA", payload: shuffledData });
   },
 };
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 export const displayActionCreator = {
   clickAllPressView() {
@@ -34,11 +42,11 @@ export const displayActionCreator = {
     store.dispatch({ type: "CLICK_NEXT_BUTTON" });
   },
 
-  clickAddSubscription() {
-    store.dispatch({ type: "CLICK_ADD_SUBSCRIPTION" });
+  clickAddSubscription(payload) {
+    store.dispatch({ type: "CLICK_ADD_SUBSCRIPTION", payload });
   },
 
-  clickUnsubscribe() {
-    store.dispatch({ type: "CLICK_UNSUBSCRIBE" });
+  clickRemoveSubscribe(payload) {
+    store.dispatch({ type: "CLICK_REMOVE_SUBSCRIBE", payload });
   },
 };
