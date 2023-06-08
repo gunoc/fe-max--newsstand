@@ -15,12 +15,14 @@
       justify-content: center;
       align-items: center;
       font: $font-title-md;
-      color: $color-gray-200;
-      > span {
+
+      > button {
+        background-color: transparent;
+        color: $color-gray-200;
         cursor: pointer;
       }
 
-      &--active {
+      .active {
         color: $color-black;
         font-weight: 700;
       }
@@ -61,7 +63,6 @@
     box-sizing: border-box;
     position: relative;
 
-    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
