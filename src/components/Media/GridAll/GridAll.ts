@@ -132,9 +132,18 @@ function handleSubscription({ event, state }) {
   );
 
   if (isDuplicated) {
-    displayActionCreator.clickRemoveSubscribe(payload);
+    if (state.display.isAllPress) {
+      return;
+    } else {
+      displayActionCreator.displayAlert(payload);
+    }
+    // displayActionCreator.clickRemoveSubscribe(payload);
   } else {
-    displayActionCreator.clickAddSubscription(payload);
+    if (!state.display.isAllPress) {
+      return;
+    } else {
+      displayActionCreator.clickAddSubscription(payload);
+    }
   }
 
   console.log(store.getState());

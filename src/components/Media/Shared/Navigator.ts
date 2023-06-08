@@ -124,6 +124,7 @@ function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
 
   $button.style.display = shouldHideButton ? "none" : "";
 }
+
 function handleViewOption(e) {
   if (e.target.nodeName !== "BUTTON") {
     return;
