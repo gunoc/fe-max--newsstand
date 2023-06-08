@@ -74,29 +74,30 @@ export function initNavigator() {
 }
 
 function handlePageChange(state) {
-  const currentPage = state.display.currentPage;
-  const subscribedItemCount = state.subscription.currentItem;
-  const subscribedPageCount = state.subscription.pageCount;
-  const isAllPress = state.display.isAllPress;
-  const isGrid = state.display.isGrid;
+  // const currentPage = state.display.currentPage;
+  // const subscribedItemCount = state.subscription.currentItem;
+  // const subscribedPageCount = state.subscription.pageCount;
+  // const isAllPress = state.display.isAllPress;
+  // const isGrid = state.display.isGrid;
 
-  updateNextButtonVisibility(
-    currentPage,
-    subscribedItemCount,
-    isAllPress,
-    isGrid,
-    subscribedPageCount
-  );
-  updatePrevButtonVisibility(currentPage, subscribedItemCount, isAllPress, isGrid);
+  const pageState = {
+    currentPage: state.display.currentPage,
+    subscribedItemCount: state.subscription.currentItem,
+    subscribedPageCount: state.subscription.pageCount,
+  };
+  const displayState = {
+    isAllPress: state.display.isAllPress,
+    isGrid: state.display.isGrid,
+  };
+
+  updateNextButtonVisibility(pageState, displayState);
+  updatePrevButtonVisibility(pageState, displayState);
 }
 
-function updateNextButtonVisibility(
-  currentPage,
-  subscribedItemCount,
-  isAllPress,
-  isGrid,
-  subscribedPageCount
-) {
+function updateNextButtonVisibility(pageState, displayState) {
+  const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
+  const { isAllPress, isGrid } = displayState;
+
   const $nextButton = document.querySelector(".btn__box--next");
   console.log(currentPage, subscribedItemCount);
 
@@ -118,12 +119,10 @@ function updateNextButtonVisibility(
   }
 }
 
-function updatePrevButtonVisibility(
-  currentPage,
-  subscribedItemCount,
-  isAllPress,
-  isGrid
-) {
+function updatePrevButtonVisibility(pageState, displayState) {
+  const { currentPage, subscribedItemCount } = pageState;
+  const { isAllPress, isGrid } = displayState;
+
   const $prevButton = document.querySelector(".btn__box--prev");
 
   if (isAllPress) {
@@ -133,7 +132,6 @@ function updatePrevButtonVisibility(
       $prevButton.style.display = "";
     }
   } else {
-    // 구독모드일때
     if (currentPage === 0) {
       $prevButton.style.display = "none";
     } else {
