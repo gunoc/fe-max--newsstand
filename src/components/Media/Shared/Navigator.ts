@@ -10,8 +10,8 @@ function createMainNavigator() {
   });
 
   $mediaViewText.innerHTML = `
-    <span class="media__view--text--active">전체 언론사</span>
-    <span>내가 구독한 언론사</span>
+    <button type="button" class="media__view--text--all active">전체 언론사</button>
+    <button type="button" class="media__view--text--subsciption">내가 구독한 언론사</button>
   `;
 
   const $mediaViewIcon = createComponent({
@@ -63,41 +63,104 @@ export function initNavigator() {
   const $mainNavigator = createMainNavigator();
   const $pageButton = createPageButton();
 
-  store.subscribe(handlePageChange);
-  $mainNavigator.addEventListener("click", log);
+  store.subscribe(() => {
+    handlePageChange(store.getState());
+  });
+
+  $mainNavigator.addEventListener("click", handleViewOption);
   $pageButton.addEventListener("click", pageEventHandler);
 
   return [$mainNavigator, $pageButton];
 }
 
-function handlePageChange() {
-  const currentPage = store.getState().display.currentPage;
-  updateNextButtonVisibility(currentPage);
-  updatePrevButtonVisibility(currentPage);
+function handlePageChange(state) {
+  const currentPage = state.display.currentPage;
+  const subscribedItemCount = state.subscription.currentItem;
+  const subscribedPageCount = state.subscription.pageCount;
+  const isAllPress = state.display.isAllPress;
+  const isGrid = state.display.isGrid;
+
+  updateNextButtonVisibility(
+    currentPage,
+    subscribedItemCount,
+    isAllPress,
+    isGrid,
+    subscribedPageCount
+  );
+  updatePrevButtonVisibility(currentPage, subscribedItemCount, isAllPress, isGrid);
 }
 
-function updateNextButtonVisibility(currentPage) {
+function updateNextButtonVisibility(
+  currentPage,
+  subscribedItemCount,
+  isAllPress,
+  isGrid,
+  subscribedPageCount
+) {
   const $nextButton = document.querySelector(".btn__box--next");
+  console.log(currentPage, subscribedItemCount);
 
-  if (currentPage === 3) {
-    $nextButton.style.display = "none";
+  if (isAllPress) {
+    if (currentPage === 3) {
+      $nextButton.style.display = "none";
+    } else {
+      $nextButton.style.display = "";
+    }
   } else {
-    $nextButton.style.display = "";
+    if (
+      (currentPage === 0 && subscribedItemCount < 25) ||
+      currentPage === subscribedPageCount
+    ) {
+      $nextButton.style.display = "none";
+    } else {
+      $nextButton.style.display = "";
+    }
   }
 }
 
-function updatePrevButtonVisibility(currentPage) {
+function updatePrevButtonVisibility(
+  currentPage,
+  subscribedItemCount,
+  isAllPress,
+  isGrid
+) {
   const $prevButton = document.querySelector(".btn__box--prev");
 
-  if (currentPage === 0) {
-    $prevButton.style.display = "none";
+  if (isAllPress) {
+    if (currentPage === 0) {
+      $prevButton.style.display = "none";
+    } else {
+      $prevButton.style.display = "";
+    }
   } else {
-    $prevButton.style.display = "";
+    // 구독모드일때
+    if (currentPage === 0) {
+      $prevButton.style.display = "none";
+    } else {
+      $prevButton.style.display = "";
+    }
   }
 }
 
-function log(e) {
-  console.log(e.target);
+function handleViewOption(e) {
+  if (e.target.nodeName !== "BUTTON") {
+    return;
+  }
+  const viewAll = e.target.classList.contains("media__view--text--all");
+  const viewSubscription = e.target.classList.contains("media__view--text--subsciption");
+  const viewGrid = e.target.classList.contains("media__view--icon--grid");
+  const viewList = e.target.classList.contains("media__view--icon--list");
+
+  if (viewAll) {
+    displayActionCreator.clickAllPressView();
+    e.target.classList.add("active");
+    e.target.nextElementSibling.classList.remove("active");
+  }
+  if (viewSubscription) {
+    displayActionCreator.clickSubscriptionView();
+    e.target.classList.add("active");
+    e.target.previousElementSibling.classList.remove("active");
+  }
 }
 
 function pageEventHandler(e) {
