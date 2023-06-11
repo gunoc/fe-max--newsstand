@@ -10,11 +10,14 @@ export function createStore(reducer, initialState = {}) {
     isDispatching = true;
 
     try {
-      state = reducer(state, action);
-      listeners.forEach(function (listener) {
-        console.log(listener);
-        listener(action);
-      });
+      const newState = reducer(state, action);
+      if (JSON.stringify(state) !== JSON.stringify(newState)) {
+        state = newState;
+        listeners.forEach(function (listener) {
+          listener(action);
+          console.log(listener);
+        });
+      }
     } finally {
       isDispatching = false;
     }
@@ -22,8 +25,6 @@ export function createStore(reducer, initialState = {}) {
 
   const subscribe = function (listener) {
     listeners.push(listener);
-    console.log(listeners);
-
     return function () {
       const index = listeners.indexOf(listener);
       listeners.splice(index, 1);
