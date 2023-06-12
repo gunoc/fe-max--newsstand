@@ -2,65 +2,77 @@ import { displayActionCreator } from "../../../actions/mediaActions";
 import { store } from "../../../store/store";
 import { createComponent } from "../../../utils/createDOM";
 
-function createMainNavigator() {
-  const $mediaViewText = createComponent({
-    tagName: "div",
-    attributes: { className: "media__view--text" },
-  });
-
-  $mediaViewText.innerHTML = `
-    <button type="button" class="media__view--text--all active">전체 언론사</button>
-    <button type="button" class="media__view--text--subsciption">내가 구독한 언론사</button>
-  `;
-
-  const $mediaViewIcon = createComponent({
-    tagName: "div",
-    attributes: { className: "media__view--icon" },
-  });
-
-  $mediaViewIcon.innerHTML = `
-    <button type="button" class="media__view--icon--list" title="리스트"></button>
-    <button type="button" class="media__view--icon--grid" title="그리드"></button>
-  `;
-
-  const $mainNavigator = createComponent({
-    tagName: "div",
-    content: [$mediaViewText, $mediaViewIcon],
-    attributes: { className: "media__view" },
-  });
-
-  return $mainNavigator;
+function createButton({ className, innerHTML, title }) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.innerHTML = innerHTML || "";
+  button.title = title || "";
+  return button;
 }
 
-function createPageButton() {
-  const $prevButton = createComponent({
-    tagName: "button",
-    attributes: { className: "btn__box--prev" },
+function MainNavigator() {
+  const textButtonAll = createButton({
+    className: "media__view--text--all active",
+    innerHTML: "전체 언론사",
+  });
+  const textButtonSub = createButton({
+    className: "media__view--text--subsciption",
+    innerHTML: "내가 구독한 언론사",
   });
 
-  const currentPage = store.getState().display.currentPage;
+  const mediaViewText = document.createElement("div");
+  mediaViewText.className = "media__view--text";
+  mediaViewText.appendChild(textButtonAll);
+  mediaViewText.appendChild(textButtonSub);
+
+  const iconButtonList = createButton({
+    className: "media__view--icon--list",
+    title: "리스트",
+  });
+  const iconButtonGrid = createButton({
+    className: "media__view--icon--grid",
+    title: "그리드",
+  });
+
+  const mediaViewIcon = document.createElement("div");
+  mediaViewIcon.className = "media__view--icon";
+  mediaViewIcon.appendChild(iconButtonList);
+  mediaViewIcon.appendChild(iconButtonGrid);
+
+  const mainNavigator = document.createElement("div");
+  mainNavigator.className = "media__view";
+  mainNavigator.appendChild(mediaViewText);
+  mainNavigator.appendChild(mediaViewIcon);
+
+  return mainNavigator;
+}
+
+function PageButton(props) {
+  const $prevButton = createButton({
+    className: "btn__box--prev",
+  });
+  const $nextButton = createButton({
+    className: "btn__box--next",
+  });
+
+  const currentPage = props.display.currentPage;
 
   if (currentPage === 0) {
     $prevButton.style.display = "none";
   }
 
-  const $nextButton = createComponent({
-    tagName: "button",
-    attributes: { className: "btn__box--next" },
-  });
-
-  const $buttonBox = createComponent({
-    tagName: "div",
-    content: [$prevButton, $nextButton],
-    attributes: { className: "btn__box" },
-  });
+  const $buttonBox = document.createElement("div");
+  $buttonBox.className = "btn__box";
+  $buttonBox.appendChild($prevButton);
+  $buttonBox.appendChild($nextButton);
 
   return $buttonBox;
 }
 
 export function initNavigator() {
-  const $mainNavigator = createMainNavigator();
-  const $pageButton = createPageButton();
+  const $mainNavigator = MainNavigator();
+  const $pageButton = PageButton(store.getState());
 
   store.subscribe(() => {
     handlePageChange(store.getState());
@@ -114,6 +126,7 @@ function shouldHideNextButton(pageState, displayState) {
 function shouldHidePrevButton(pageState, displayState) {
   const { currentPage } = pageState;
   const { isAllPress } = displayState;
+  console.log(currentPage);
 
   return currentPage === 0;
 }
@@ -137,15 +150,15 @@ function handleViewOption(e) {
 
   if (viewAll) {
     displayActionCreator.clickAllPressView();
-    setActiveButtonState(e.target, e.target.nextElementSibling);
+    setActiveButtonClass(e.target, e.target.nextElementSibling);
   }
   if (viewSubscription) {
     displayActionCreator.clickSubscriptionView();
-    setActiveButtonState(e.target, e.target.previousElementSibling);
+    setActiveButtonClass(e.target, e.target.previousElementSibling);
   }
 }
 
-function setActiveButtonState(activeButton, inactiveButton) {
+function setActiveButtonClass(activeButton, inactiveButton) {
   activeButton.classList.add("active");
   inactiveButton.classList.remove("active");
 }
