@@ -12,4 +12,6 @@ export enum ActionTypes {
   HIDE_ALERT = "HIDE_ALERT",
 }
 
-export enum Number {}
+export enum Numbers {
+  ITEMS_PER_PAGE = 24,
+}
