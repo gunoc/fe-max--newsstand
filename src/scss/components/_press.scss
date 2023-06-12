@@ -15,12 +15,14 @@
       justify-content: center;
       align-items: center;
       font: $font-title-md;
-      color: $color-gray-200;
-      > span {
+
+      > button {
+        background-color: transparent;
+        color: $color-gray-200;
         cursor: pointer;
       }
 
-      &--active {
+      .active {
         color: $color-black;
         font-weight: 700;
       }
@@ -58,15 +60,20 @@
   }
 
   &__grid--item {
+    box-sizing: border-box;
     position: relative;
 
-    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
 
     border-right: 1px solid $color-gray-100;
     border-bottom: 1px solid $color-gray-100;
+
+    > img {
+      width: auto;
+      height: 20px;
+    }
   }
 
   /* allPress-list */

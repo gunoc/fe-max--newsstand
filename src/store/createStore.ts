@@ -1,5 +1,5 @@
 export function createStore(reducer, initialState = {}) {
-  const state = initialState;
+  let state = initialState;
   let isDispatching = false;
   const listeners = [];
 
@@ -10,10 +10,14 @@ export function createStore(reducer, initialState = {}) {
     isDispatching = true;
 
     try {
-      state = reducer(state, action);
-      listeners.forEach(function (listener) {
-        listener(action);
-      });
+      const newState = reducer(state, action);
+      if (JSON.stringify(state) !== JSON.stringify(newState)) {
+        state = newState;
+        listeners.forEach(function (listener) {
+          listener(action);
+          console.log(listener);
+        });
+      }
     } finally {
       isDispatching = false;
     }
