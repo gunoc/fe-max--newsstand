@@ -1,59 +1,102 @@
 import { displayActionCreator } from "../../../actions/mediaActions";
 import { store } from "../../../store/store";
-import { createComponent } from "../../../utils/createDOM";
+import { createComponent, createElement } from "../../../utils/createDOM";
 
-function createButton({ className, innerHTML, title }) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = className;
-  button.innerHTML = innerHTML || "";
-  button.title = title || "";
-  return button;
+export function initNavigator() {
+  const $mainNavigator = MainNavigator();
+  const $pageButtons = PageButtons(store.getState());
+
+  store.subscribe(() => {
+    handlePageChange(store.getState());
+  });
+
+  $mainNavigator.addEventListener("click", handleViewOption);
+  $pageButtons.addEventListener("click", pageEventHandler);
+
+  return [$mainNavigator, $pageButtons];
 }
 
 function MainNavigator() {
-  const textButtonAll = createButton({
-    className: "media__view--text--all active",
-    innerHTML: "전체 언론사",
-  });
-  const textButtonSub = createButton({
-    className: "media__view--text--subsciption",
-    innerHTML: "내가 구독한 언론사",
-  });
+  const $mediaViewText = createMediaViewText();
+  const $mediaViewIcon = createMediaViewIcon();
 
-  const mediaViewText = document.createElement("div");
-  mediaViewText.className = "media__view--text";
-  mediaViewText.appendChild(textButtonAll);
-  mediaViewText.appendChild(textButtonSub);
-
-  const iconButtonList = createButton({
-    className: "media__view--icon--list",
-    title: "리스트",
-  });
-  const iconButtonGrid = createButton({
-    className: "media__view--icon--grid",
-    title: "그리드",
+  const $mainNavigator = createComponent({
+    tagName: "div",
+    content: [$mediaViewText, $mediaViewIcon],
+    attributes: { className: "media__view" },
   });
 
-  const mediaViewIcon = document.createElement("div");
-  mediaViewIcon.className = "media__view--icon";
-  mediaViewIcon.appendChild(iconButtonList);
-  mediaViewIcon.appendChild(iconButtonGrid);
-
-  const mainNavigator = document.createElement("div");
-  mainNavigator.className = "media__view";
-  mainNavigator.appendChild(mediaViewText);
-  mainNavigator.appendChild(mediaViewIcon);
-
-  return mainNavigator;
+  return $mainNavigator;
 }
 
-function PageButton(props) {
-  const $prevButton = createButton({
-    className: "btn__box--prev",
+function createMediaViewText() {
+  const $textButtonAll = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--text--all", innerHTML: "전체 언론사" },
   });
-  const $nextButton = createButton({
-    className: "btn__box--next",
+  $textButtonAll.classList.add("active");
+
+  const $textButtonSub = createElement({
+    tagName: "button",
+    attributes: {
+      className: "media__view--text--subsciption",
+      innerHTML: "내가 구독한 언론사",
+    },
+  });
+
+  const $mediaViewText = createComponent({
+    tagName: "div",
+    content: [$textButtonAll, $textButtonSub],
+    attributes: { className: "media__view--text" },
+  });
+
+  return $mediaViewText;
+}
+
+function createMediaViewIcon() {
+  const $iconButtonList = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--icon--list", title: "리스트" },
+  });
+  const $iconButtonGrid = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--icon--grid", title: "그리드" },
+  });
+
+  const $mediaViewIcon = createComponent({
+    tagName: "div",
+    content: [$iconButtonList, $iconButtonGrid],
+    attributes: { className: "media__view--icon" },
+  });
+
+  return $mediaViewIcon;
+}
+
+function PageButtons(props) {
+  const { $prevButton, $nextButton } = createPrevNextButtons(props);
+
+  const $buttonBox = createComponent({
+    tagName: "div",
+    content: [$prevButton, $nextButton],
+    attributes: { className: "btn__box" },
+  });
+
+  return $buttonBox;
+}
+
+function createPrevNextButtons(props) {
+  const $prevButton = createElement({
+    tagName: "button",
+    attributes: {
+      className: "btn__box--prev",
+    },
+  });
+
+  const $nextButton = createElement({
+    tagName: "button",
+    attributes: {
+      className: "btn__box--next",
+    },
   });
 
   const currentPage = props.display.currentPage;
@@ -62,26 +105,7 @@ function PageButton(props) {
     $prevButton.style.display = "none";
   }
 
-  const $buttonBox = document.createElement("div");
-  $buttonBox.className = "btn__box";
-  $buttonBox.appendChild($prevButton);
-  $buttonBox.appendChild($nextButton);
-
-  return $buttonBox;
-}
-
-export function initNavigator() {
-  const $mainNavigator = MainNavigator();
-  const $pageButton = PageButton(store.getState());
-
-  store.subscribe(() => {
-    handlePageChange(store.getState());
-  });
-
-  $mainNavigator.addEventListener("click", handleViewOption);
-  $pageButton.addEventListener("click", pageEventHandler);
-
-  return [$mainNavigator, $pageButton];
+  return { $prevButton, $nextButton };
 }
 
 function handlePageChange(state) {
@@ -109,6 +133,13 @@ function handlePageChange(state) {
   );
 }
 
+function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
+  const $button = document.querySelector(selector);
+  const shouldHideButton = shouldHide(pageState, displayState);
+
+  $button.style.display = shouldHideButton ? "none" : "";
+}
+
 function shouldHideNextButton(pageState, displayState) {
   const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
   const { isAllPress } = displayState;
@@ -131,17 +162,11 @@ function shouldHidePrevButton(pageState, displayState) {
   return currentPage === 0;
 }
 
-function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
-  const $button = document.querySelector(selector);
-  const shouldHideButton = shouldHide(pageState, displayState);
-
-  $button.style.display = shouldHideButton ? "none" : "";
-}
-
 function handleViewOption(e) {
   if (e.target.nodeName !== "BUTTON") {
     return;
   }
+
   const targetClassList = e.target.classList;
   const viewAll = targetClassList.contains("media__view--text--all");
   const viewSubscription = targetClassList.contains("media__view--text--subsciption");
@@ -174,6 +199,7 @@ function pageEventHandler(e) {
   if (prev) {
     displayActionCreator.clickPrevButton();
   }
+
   if (next) {
     displayActionCreator.clickNextButton();
   }
