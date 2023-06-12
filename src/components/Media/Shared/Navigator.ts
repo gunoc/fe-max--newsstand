@@ -17,19 +17,19 @@ export function initNavigator() {
 }
 
 function MainNavigator() {
-  const $mediaViewText = createMediaViewText();
-  const $mediaViewIcon = createMediaViewIcon();
+  const $mediaViewTexts = createMediaViewTexts();
+  const $mediaViewIcons = createMediaViewIcons();
 
   const $mainNavigator = createComponent({
     tagName: "div",
-    content: [$mediaViewText, $mediaViewIcon],
+    content: [$mediaViewTexts, $mediaViewIcons],
     attributes: { className: "media__view" },
   });
 
   return $mainNavigator;
 }
 
-function createMediaViewText() {
+function createMediaViewTexts() {
   const $textButtonAll = createElement({
     tagName: "button",
     attributes: { className: "media__view--text--all", innerHTML: "전체 언론사" },
@@ -44,16 +44,16 @@ function createMediaViewText() {
     },
   });
 
-  const $mediaViewText = createComponent({
+  const $mediaViewTexts = createComponent({
     tagName: "div",
     content: [$textButtonAll, $textButtonSub],
     attributes: { className: "media__view--text" },
   });
 
-  return $mediaViewText;
+  return $mediaViewTexts;
 }
 
-function createMediaViewIcon() {
+function createMediaViewIcons() {
   const $iconButtonList = createElement({
     tagName: "button",
     attributes: { className: "media__view--icon--list", title: "리스트" },
@@ -63,13 +63,13 @@ function createMediaViewIcon() {
     attributes: { className: "media__view--icon--grid", title: "그리드" },
   });
 
-  const $mediaViewIcon = createComponent({
+  const $mediaViewIcons = createComponent({
     tagName: "div",
     content: [$iconButtonList, $iconButtonGrid],
     attributes: { className: "media__view--icon" },
   });
 
-  return $mediaViewIcon;
+  return $mediaViewIcons;
 }
 
 function PageButtons(props) {
