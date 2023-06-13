@@ -34,7 +34,7 @@ function MainNavigator() {
 function createMediaViewTexts() {
   const $textButtonAll = createElement({
     tagName: "button",
-    attributes: { className: "media__view--text--all", innerHTML: "전체 언론사" },
+    attributes: { className: "media__view--text--all", textContent: "전체 언론사" },
   });
   $textButtonAll.classList.add("active");
 
@@ -42,7 +42,7 @@ function createMediaViewTexts() {
     tagName: "button",
     attributes: {
       className: "media__view--text--subsciption",
-      innerHTML: "내가 구독한 언론사",
+      textContent: "내가 구독한 언론사",
     },
   });
 
