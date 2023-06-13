@@ -1,13 +1,19 @@
-import { ActionTypes } from "../constants/constants";
+import { ActionTypes, FetchUrls } from "../constants/constants";
 import { store } from "../store/store";
 import { shuffleArray } from "../utils/shuffleArray";
 
 export const fetchActionCreator = {
   async fetchGridData() {
-    const response = await fetch("http://localhost:3000/grid");
+    const response = await fetch(`${FetchUrls.BASE_URL}/${FetchUrls.GRID_FETCH_URL}`);
     const data = await response.json();
     const shuffledData = shuffleArray(data);
     store.dispatch({ type: ActionTypes.LOAD_GRID_DATA, payload: shuffledData });
+  },
+
+  async fetchListData() {
+    const response = await fetch(`${FetchUrls.BASE_URL}/${FetchUrls.LIST_FETCH_URL}`);
+    const data = await response.json();
+    store.dispatch({ type: ActionTypes.LOAD_LIST_DATA, payload: data });
   },
 };
 
