@@ -5,8 +5,6 @@ import { DisplayState, PageState } from "../../../types/types";
 import { createComponent, createElement } from "../../../utils/createDOM";
 
 export function initNavigator() {
-  console.log(store.getState());
-
   const $mainNavigator = MainNavigator();
   const $pageButtons = PageButtons(store.getState());
 
@@ -209,12 +207,10 @@ function handleViewOption(e: MouseEvent) {
 
   if (viewGrid) {
     displayActionCreator.clickGridView();
-    console.log(store.getState());
   }
 
   if (viewList) {
     displayActionCreator.clickListView();
-    console.log(store.getState());
   }
 }
 
