@@ -27,6 +27,13 @@ export interface DisplayState {
 
 export interface MediaDataState {
   data: ImgSrcAltType[];
+  listData: any[];
+}
+
+export interface PageState {
+  currentPage: number;
+  subscribedItemCount: number;
+  subscribedPageCount: number;
 }
 
 export interface SubscriptionState {
