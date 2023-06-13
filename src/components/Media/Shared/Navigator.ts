@@ -1,8 +1,12 @@
 import { displayActionCreator } from "../../../actions/mediaActions";
+import { Numbers } from "../../../constants/constants";
 import { store } from "../../../store/store";
+import { DisplayState, PageState } from "../../../types/types";
 import { createComponent, createElement } from "../../../utils/createDOM";
 
 export function initNavigator() {
+  console.log(store.getState());
+
   const $mainNavigator = MainNavigator();
   const $pageButtons = PageButtons(store.getState());
 
@@ -72,7 +76,7 @@ function createMediaViewIcons() {
   return $mediaViewIcons;
 }
 
-function PageButtons(props) {
+function PageButtons(props: any) {
   const { $prevButton, $nextButton } = createPrevNextButtons(props);
 
   const $buttonBox = createComponent({
@@ -84,7 +88,7 @@ function PageButtons(props) {
   return $buttonBox;
 }
 
-function createPrevNextButtons(props) {
+function createPrevNextButtons(props: any) {
   const $prevButton = createElement({
     tagName: "button",
     attributes: {
@@ -108,7 +112,7 @@ function createPrevNextButtons(props) {
   return { $prevButton, $nextButton };
 }
 
-function handlePageChange(state) {
+function handlePageChange(state: any) {
   const pageState = {
     currentPage: state.display.currentPage,
     subscribedItemCount: state.subscription.currentItem,
@@ -117,6 +121,7 @@ function handlePageChange(state) {
   const displayState = {
     isAllPress: state.display.isAllPress,
     isGrid: state.display.isGrid,
+    currentPage: state.display.currentPage,
   };
 
   updateButtonVisibility(
@@ -133,41 +138,54 @@ function handlePageChange(state) {
   );
 }
 
-function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
-  const $button = document.querySelector(selector);
+function updateButtonVisibility(
+  selector: string,
+  shouldHide: (pageState: PageState, displayState: DisplayState) => boolean,
+  pageState: PageState,
+  displayState: DisplayState
+) {
+  const $button = document.querySelector(selector) as HTMLElement;
   const shouldHideButton = shouldHide(pageState, displayState);
 
   $button.style.display = shouldHideButton ? "none" : "";
 }
 
-function shouldHideNextButton(pageState, displayState) {
+export function shouldHideNextButton(pageState: PageState, displayState: DisplayState) {
   const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
-  const { isAllPress } = displayState;
+  const { isAllPress, isGrid } = displayState;
+
+  if (!isGrid) {
+    return false;
+  }
 
   if (isAllPress) {
-    return currentPage === 3;
+    return currentPage === Numbers.MAX_GRID_PAGE;
   } else {
     return (
-      (currentPage === 0 && subscribedItemCount < 25) ||
+      (currentPage === 0 && subscribedItemCount < Numbers.ITEMS_PER_PAGE + 1) ||
       currentPage === subscribedPageCount
     );
   }
 }
 
-function shouldHidePrevButton(pageState, displayState) {
+export function shouldHidePrevButton(pageState: PageState, displayState: DisplayState) {
   const { currentPage } = pageState;
-  const { isAllPress } = displayState;
-  console.log(currentPage);
+  const { isGrid } = displayState;
+
+  if (!isGrid) {
+    return false;
+  }
 
   return currentPage === 0;
 }
 
-function handleViewOption(e) {
-  if (e.target.nodeName !== "BUTTON") {
+function handleViewOption(e: MouseEvent) {
+  const target = e.target as HTMLElement;
+  if (target.nodeName !== "BUTTON") {
     return;
   }
 
-  const targetClassList = e.target.classList;
+  const targetClassList = target.classList;
   const viewAll = targetClassList.contains("media__view--text--all");
   const viewSubscription = targetClassList.contains("media__view--text--subsciption");
   const viewGrid = targetClassList.contains("media__view--icon--grid");
@@ -175,26 +193,45 @@ function handleViewOption(e) {
 
   if (viewAll) {
     displayActionCreator.clickAllPressView();
-    setActiveButtonClass(e.target, e.target.nextElementSibling);
+    const nextSibling = target.nextElementSibling;
+    if (nextSibling?.nodeName === "BUTTON") {
+      setActiveButtonClass(target, nextSibling as HTMLElement);
+    }
   }
+
   if (viewSubscription) {
     displayActionCreator.clickSubscriptionView();
-    setActiveButtonClass(e.target, e.target.previousElementSibling);
+    const previousSibling = target.previousElementSibling;
+    if (previousSibling?.nodeName === "BUTTON") {
+      setActiveButtonClass(target, previousSibling as HTMLElement);
+    }
+  }
+
+  if (viewGrid) {
+    displayActionCreator.clickGridView();
+    console.log(store.getState());
+  }
+
+  if (viewList) {
+    displayActionCreator.clickListView();
+    console.log(store.getState());
   }
 }
 
-function setActiveButtonClass(activeButton, inactiveButton) {
+function setActiveButtonClass(activeButton: HTMLElement, inactiveButton: HTMLElement) {
   activeButton.classList.add("active");
   inactiveButton.classList.remove("active");
 }
 
-function pageEventHandler(e) {
-  if (e.target.nodeName !== "BUTTON") {
+function pageEventHandler(e: MouseEvent) {
+  const target = e.target as HTMLElement;
+
+  if (target.nodeName !== "BUTTON") {
     return;
   }
 
-  const prev = e.target.classList.contains("btn__box--prev");
-  const next = e.target.classList.contains("btn__box--next");
+  const prev = target.classList.contains("btn__box--prev");
+  const next = target.classList.contains("btn__box--next");
 
   if (prev) {
     displayActionCreator.clickPrevButton();
