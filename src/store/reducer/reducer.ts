@@ -15,6 +15,7 @@ const initialDisplayState: DisplayState = {
 
 const mediaDataState: MediaDataState = {
   data: [],
+  listData: [],
 };
 
 const subscriptionState: SubscriptionState = {
@@ -31,12 +32,14 @@ function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsTyp
       return {
         ...state,
         isAllPress: true,
+        isGrid: true,
         currentPage: 0,
       };
     case ActionTypes.CLICK_SUBSCRIPTION_VIEW:
       return {
         ...state,
         isAllPress: false,
+        isGrid: false,
         currentPage: 0,
       };
     case ActionTypes.CLICK_GRID_VIEW:
@@ -53,13 +56,11 @@ function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsTyp
       return {
         ...state,
         ...limitPageNavigation(ActionTypes.CLICK_PREV_BUTTON, state),
-        // currentPage: state.currentPage > 0 ? state.currentPage - 1 : state.currentPage,
       };
     case ActionTypes.CLICK_NEXT_BUTTON:
       return {
         ...state,
         ...limitPageNavigation(ActionTypes.CLICK_NEXT_BUTTON, state),
-        // currentPage: state.currentPage < 3 ? state.currentPage + 1 : state.currentPage,
       };
     default:
       return state;
@@ -67,8 +68,6 @@ function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsTyp
 }
 
 function limitPageNavigation(actionType: string, state: DisplayState) {
-  console.log(state);
-
   if (actionType === ActionTypes.CLICK_PREV_BUTTON) {
     return {
       ...state,
@@ -91,7 +90,7 @@ function subscriptionReducer(state = subscriptionState, action: ActionPropsType)
       };
     case ActionTypes.CLICK_ADD_SUBSCRIPTION:
       // 중복이면 원래 state를 반환
-      // 중복이 아니면 추가할거
+      // 중복이 아니면 추가
       if (isDuplicate(state.subscribedPresses, action.payload)) {
         return state;
       }
@@ -156,6 +155,11 @@ function mediaDataReducer(state = mediaDataState, action: ActionPropsType) {
       return {
         ...state,
         data: action.payload,
+      };
+    case ActionTypes.LOAD_LIST_DATA:
+      return {
+        ...state,
+        listData: action.payload,
       };
 
     default:
