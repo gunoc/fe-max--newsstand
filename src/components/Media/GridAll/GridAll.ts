@@ -2,8 +2,28 @@ import { fetchActionCreator, displayActionCreator } from "../../../actions/media
 import { Numbers } from "../../../constants/constants";
 import { store } from "../../../store/store";
 import { createComponent, createElement } from "../../../utils/createDOM";
+import { createList } from "../List/List";
 
-export function createGrid() {
+export async function initGrid($list) {
+  const $grid = createGrid();
+  store.subscribe(() => renderGridItems($grid, store.getState(), $list));
+
+  await fetchActionCreator.fetchGridData();
+
+  $grid.addEventListener("mouseover", (e: MouseEvent) => {
+    handleMouseEvents({ event: e, state: store.getState() });
+  });
+  $grid.addEventListener("mouseout", (e: MouseEvent) => {
+    handleMouseEvents({ event: e, state: store.getState() });
+  });
+  $grid.addEventListener("click", (e: MouseEvent) => {
+    handleSubscription({ event: e, state: store.getState() });
+  });
+
+  return $grid;
+}
+
+function createGrid() {
   const $gridContainer = createElement({
     tagName: "ul",
     attributes: { className: "media__grid--container" },
@@ -71,6 +91,38 @@ function createButtonContent() {
   return [$img, $span];
 }
 
+function renderGridItems($grid: HTMLElement, state: any, $list: HTMLElement) {
+  const allData = state.mediaData.data;
+  const subscribedPressesData = state.subscription.subscribedPresses;
+
+  const pageIndex = state.display.currentPage;
+  const startIndex = pageIndex * Numbers.ITEMS_PER_PAGE;
+  const endIndex = startIndex + Numbers.ITEMS_PER_PAGE;
+
+  const currentPageData = allData.slice(startIndex, endIndex);
+  const currentPageSubscribedData = subscribedPressesData.slice(startIndex, endIndex);
+
+  if (state.display.isAllPress && state.display.isGrid) {
+    console.log("그리드고 전체언론사");
+    $list.style.display = "none";
+    $grid.style.display = "grid";
+    updateGridItems($grid, currentPageData);
+  } else if (!state.display.isAllPress && state.display.isGrid) {
+    console.log("그리드고 구독한거");
+    $list.style.display = "none";
+    $grid.style.display = "grid";
+    updateGridItems($grid, currentPageSubscribedData);
+  } else if (!state.display.isAllPress && !state.display.isGrid) {
+    console.log("리스트고 구독한거");
+    $list.style.display = "";
+    $grid.style.display = "none";
+  } else if (state.display.isAllPress && !state.display.isGrid) {
+    console.log("리스트고 전체언론사");
+    $list.style.display = "";
+    $grid.style.display = "none";
+  }
+}
+
 function updateGridItems($grid: HTMLElement, pageData: any) {
   const $gridItems = $grid.querySelectorAll(".media__grid--item");
 
@@ -84,43 +136,6 @@ function updateGridItems($grid: HTMLElement, pageData: any) {
       img.setAttribute("alt", "");
     }
   });
-}
-
-function renderGridItems($grid: HTMLElement, state: any) {
-  const allData = state.mediaData.data;
-  const subscribedPressesData = state.subscription.subscribedPresses;
-
-  const pageIndex = state.display.currentPage;
-  const startIndex = pageIndex * Numbers.ITEMS_PER_PAGE;
-  const endIndex = startIndex + Numbers.ITEMS_PER_PAGE;
-
-  const currentPageData = allData.slice(startIndex, endIndex);
-  const currentPageSubscribedData = subscribedPressesData.slice(startIndex, endIndex);
-
-  if (state.display.isAllPress) {
-    updateGridItems($grid, currentPageData);
-  } else {
-    updateGridItems($grid, currentPageSubscribedData);
-  }
-}
-
-export async function grid() {
-  const $grid = createGrid();
-  store.subscribe(() => renderGridItems($grid, store.getState()));
-
-  await fetchActionCreator.fetchGridData();
-
-  $grid.addEventListener("mouseover", (e: MouseEvent) => {
-    handleMouseEvents({ event: e, state: store.getState() });
-  });
-  $grid.addEventListener("mouseout", (e: MouseEvent) => {
-    handleMouseEvents({ event: e, state: store.getState() });
-  });
-  $grid.addEventListener("click", (e: MouseEvent) => {
-    handleSubscription({ event: e, state: store.getState() });
-  });
-
-  return $grid;
 }
 
 function handleMouseEvents({ event, state }) {
