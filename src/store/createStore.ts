@@ -15,7 +15,6 @@ export function createStore(reducer, initialState = {}) {
         state = newState;
         listeners.forEach(function (listener) {
           listener(action);
-          console.log(listener);
         });
       }
     } finally {

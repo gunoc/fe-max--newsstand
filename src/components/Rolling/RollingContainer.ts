@@ -128,22 +128,18 @@ function rollAnimation(element, index) {
 
 function initEventHandler(rollLeft, rollRight) {
   rollLeft.addEventListener("mouseenter", () => {
-    console.log("왼쪽호버중");
     viewActionCreator.stopLeftInterval();
     leftIntervalState(rollLeft);
   });
   rollLeft.addEventListener("mouseleave", () => {
-    console.log("왼쪽나감");
     viewActionCreator.startLeftInterval();
     leftIntervalState(rollLeft);
   });
   rollRight.addEventListener("mouseenter", () => {
-    console.log("오른쪽호버중");
     viewActionCreator.stopRightInterval();
     rightIntervalState(rollRight);
   });
   rollRight.addEventListener("mouseleave", () => {
-    console.log("오른쪽나감");
     viewActionCreator.startRightInterval();
     rightIntervalState(rollRight);
   });

@@ -187,6 +187,4 @@ function handleSubscription({ event, state }) {
       displayActionCreator.clickAddSubscription(payload);
     }
   }
-
-  console.log(store.getState());
 }
