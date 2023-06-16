@@ -13,7 +13,9 @@ export function initNavigator() {
   });
 
   $mainNavigator.addEventListener("click", handleViewOption);
-  $pageButtons.addEventListener("click", pageEventHandler);
+  $pageButtons.addEventListener("click", (e) => {
+    pageEventHandler(e, store.getState());
+  });
 
   return [$mainNavigator, $pageButtons];
 }
@@ -153,7 +155,7 @@ export function shouldHideNextButton(pageState: PageState, displayState: Display
   const { isAllPress, isGrid } = displayState;
 
   if (!isGrid) {
-    return false;
+    return;
   }
 
   if (isAllPress) {
@@ -171,7 +173,7 @@ export function shouldHidePrevButton(pageState: PageState, displayState: Display
   const { isGrid } = displayState;
 
   if (!isGrid) {
-    return false;
+    return;
   }
 
   return currentPage === 0;
@@ -219,7 +221,7 @@ function setActiveButtonClass(activeButton: HTMLElement, inactiveButton: HTMLEle
   inactiveButton.classList.remove("active");
 }
 
-function pageEventHandler(e: MouseEvent) {
+function pageEventHandler(e: MouseEvent, state) {
   const target = e.target as HTMLElement;
 
   if (target.nodeName !== "BUTTON") {
@@ -229,11 +231,21 @@ function pageEventHandler(e: MouseEvent) {
   const prev = target.classList.contains("btn__box--prev");
   const next = target.classList.contains("btn__box--next");
 
-  if (prev) {
-    displayActionCreator.clickPrevButton();
-  }
+  if (state.display.isGrid) {
+    if (prev) {
+      displayActionCreator.clickPrevButton();
+    }
 
-  if (next) {
-    displayActionCreator.clickNextButton();
+    if (next) {
+      displayActionCreator.clickNextButton();
+    }
+  } else {
+    if (prev) {
+      displayActionCreator.clickListPrevButton(state);
+    }
+
+    if (next) {
+      displayActionCreator.clickListNextButton(state);
+    }
   }
 }

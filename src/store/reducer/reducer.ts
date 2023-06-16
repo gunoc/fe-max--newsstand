@@ -3,6 +3,7 @@ import {
   ActionPropsType,
   DisplayState,
   ImgSrcAltType,
+  ListDisplayState,
   MediaDataState,
   SubscriptionState,
 } from "../../types/types";
@@ -24,6 +25,13 @@ const subscriptionState: SubscriptionState = {
   currentItem: 0,
   displayAlert: false,
   removeItem: null,
+};
+
+const listDisplayState: ListDisplayState = {
+  pageIndexInCategory: 0,
+  categoryIndex: 1,
+  currentIndex: 0,
+  categoryLength: 82,
 };
 
 function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsType) {
@@ -79,6 +87,61 @@ function limitPageNavigation(actionType: string, state: DisplayState) {
       currentPage: state.currentPage < 3 ? state.currentPage + 1 : state.currentPage,
     };
   }
+}
+
+function listReducer(state = listDisplayState, action: ActionPropsType) {
+  switch (action.type) {
+    case ActionTypes.CLICK_LIST_PREV_BUTTON:
+      return {
+        // ...state,
+        ...listPageNavigation(action, state),
+      };
+    case ActionTypes.CLICK_LIST_NEXT_BUTTON:
+      return {
+        // ...state,
+        ...listPageNavigation(action, state),
+      };
+
+    default:
+      return state;
+  }
+}
+
+function listPageNavigation(action: ActionPropsType, state: ListDisplayState) {
+  const categories = action.payload?.mediaData.listData;
+
+  let newCategoryIndex = state.categoryIndex;
+  let newCurrentIndex = state.currentIndex;
+
+  if (action.type === ActionTypes.CLICK_LIST_PREV_BUTTON) {
+    newCategoryIndex =
+      state.currentIndex - 1 >= 0
+        ? state.categoryIndex
+        : state.categoryIndex - 1 >= 0
+        ? state.categoryIndex - 1
+        : categories.length - 1;
+    newCurrentIndex =
+      state.currentIndex - 1 >= 0
+        ? state.currentIndex - 1
+        : categories[newCategoryIndex].pressList.length - 1;
+  } else if (action.type === ActionTypes.CLICK_LIST_NEXT_BUTTON) {
+    newCategoryIndex =
+      state.currentIndex + 1 < categories[state.categoryIndex].pressList.length
+        ? state.categoryIndex
+        : state.categoryIndex + 1 < categories.length
+        ? state.categoryIndex + 1
+        : 0;
+    newCurrentIndex =
+      state.currentIndex + 1 < categories[newCategoryIndex].pressList.length
+        ? state.currentIndex + 1
+        : 0;
+  }
+
+  return {
+    ...state,
+    categoryIndex: newCategoryIndex,
+    currentIndex: newCurrentIndex,
+  };
 }
 
 function subscriptionReducer(state = subscriptionState, action: ActionPropsType) {
@@ -188,4 +251,5 @@ export const rootReducer = combineReducers({
   mediaData: mediaDataReducer,
   subscription: subscriptionReducer,
   display: mediaDisplayReducer,
+  listPageState: listReducer,
 });

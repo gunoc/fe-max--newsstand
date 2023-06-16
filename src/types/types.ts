@@ -24,7 +24,12 @@ export interface DisplayState {
   isGrid: boolean;
   currentPage: number;
 }
-
+export interface ListDisplayState {
+  pageIndexInCategory: number;
+  categoryIndex: number;
+  currentIndex: number;
+  categoryLength: number;
+}
 export interface MediaDataState {
   data: ImgSrcAltType[];
   listData: any[];

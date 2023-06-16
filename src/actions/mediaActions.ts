@@ -57,4 +57,12 @@ export const displayActionCreator = {
   hideAlert() {
     store.dispatch({ type: ActionTypes.HIDE_ALERT });
   },
+
+  clickListPrevButton(payload) {
+    store.dispatch({ type: ActionTypes.CLICK_LIST_PREV_BUTTON, payload });
+  },
+
+  clickListNextButton(payload) {
+    store.dispatch({ type: ActionTypes.CLICK_LIST_NEXT_BUTTON, payload });
+  },
 };
