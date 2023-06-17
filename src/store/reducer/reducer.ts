@@ -3,6 +3,7 @@ import {
   ActionPropsType,
   DisplayState,
   ImgSrcAltType,
+  ListDisplayState,
   MediaDataState,
   SubscriptionState,
 } from "../../types/types";
@@ -15,6 +16,7 @@ const initialDisplayState: DisplayState = {
 
 const mediaDataState: MediaDataState = {
   data: [],
+  listData: [],
 };
 
 const subscriptionState: SubscriptionState = {
@@ -25,18 +27,27 @@ const subscriptionState: SubscriptionState = {
   removeItem: null,
 };
 
+const listDisplayState: ListDisplayState = {
+  pageIndexInCategory: 0,
+  categoryIndex: 1,
+  currentIndex: 0,
+  categoryLength: 82,
+};
+
 function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsType) {
   switch (action.type) {
     case ActionTypes.CLICK_ALL_PRESS_VIEW:
       return {
         ...state,
         isAllPress: true,
+        isGrid: true,
         currentPage: 0,
       };
     case ActionTypes.CLICK_SUBSCRIPTION_VIEW:
       return {
         ...state,
         isAllPress: false,
+        isGrid: false,
         currentPage: 0,
       };
     case ActionTypes.CLICK_GRID_VIEW:
@@ -53,13 +64,11 @@ function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsTyp
       return {
         ...state,
         ...limitPageNavigation(ActionTypes.CLICK_PREV_BUTTON, state),
-        // currentPage: state.currentPage > 0 ? state.currentPage - 1 : state.currentPage,
       };
     case ActionTypes.CLICK_NEXT_BUTTON:
       return {
         ...state,
         ...limitPageNavigation(ActionTypes.CLICK_NEXT_BUTTON, state),
-        // currentPage: state.currentPage < 3 ? state.currentPage + 1 : state.currentPage,
       };
     default:
       return state;
@@ -67,8 +76,6 @@ function mediaDisplayReducer(state = initialDisplayState, action: ActionPropsTyp
 }
 
 function limitPageNavigation(actionType: string, state: DisplayState) {
-  console.log(state);
-
   if (actionType === ActionTypes.CLICK_PREV_BUTTON) {
     return {
       ...state,
@@ -82,6 +89,61 @@ function limitPageNavigation(actionType: string, state: DisplayState) {
   }
 }
 
+function listReducer(state = listDisplayState, action: ActionPropsType) {
+  switch (action.type) {
+    case ActionTypes.CLICK_LIST_PREV_BUTTON:
+      return {
+        // ...state,
+        ...listPageNavigation(action, state),
+      };
+    case ActionTypes.CLICK_LIST_NEXT_BUTTON:
+      return {
+        // ...state,
+        ...listPageNavigation(action, state),
+      };
+
+    default:
+      return state;
+  }
+}
+
+function listPageNavigation(action: ActionPropsType, state: ListDisplayState) {
+  const categories = action.payload?.mediaData.listData;
+
+  let newCategoryIndex = state.categoryIndex;
+  let newCurrentIndex = state.currentIndex;
+
+  if (action.type === ActionTypes.CLICK_LIST_PREV_BUTTON) {
+    newCategoryIndex =
+      state.currentIndex - 1 >= 0
+        ? state.categoryIndex
+        : state.categoryIndex - 1 >= 0
+        ? state.categoryIndex - 1
+        : categories.length - 1;
+    newCurrentIndex =
+      state.currentIndex - 1 >= 0
+        ? state.currentIndex - 1
+        : categories[newCategoryIndex].pressList.length - 1;
+  } else if (action.type === ActionTypes.CLICK_LIST_NEXT_BUTTON) {
+    newCategoryIndex =
+      state.currentIndex + 1 < categories[state.categoryIndex].pressList.length
+        ? state.categoryIndex
+        : state.categoryIndex + 1 < categories.length
+        ? state.categoryIndex + 1
+        : 0;
+    newCurrentIndex =
+      state.currentIndex + 1 < categories[newCategoryIndex].pressList.length
+        ? state.currentIndex + 1
+        : 0;
+  }
+
+  return {
+    ...state,
+    categoryIndex: newCategoryIndex,
+    currentIndex: newCurrentIndex,
+  };
+}
+
 function subscriptionReducer(state = subscriptionState, action: ActionPropsType) {
   switch (action.type) {
     case "LOAD_SUBSCRIPTION_DATA": //추가 예정
@@ -91,7 +153,7 @@ function subscriptionReducer(state = subscriptionState, action: ActionPropsType)
       };
     case ActionTypes.CLICK_ADD_SUBSCRIPTION:
       // 중복이면 원래 state를 반환
-      // 중복이 아니면 추가할거
+      // 중복이 아니면 추가
       if (isDuplicate(state.subscribedPresses, action.payload)) {
         return state;
       }
@@ -157,6 +219,11 @@ function mediaDataReducer(state = mediaDataState, action: ActionPropsType) {
         ...state,
         data: action.payload,
       };
+    case ActionTypes.LOAD_LIST_DATA:
+      return {
+        ...state,
+        listData: action.payload,
+      };
 
     default:
       return state;
@@ -184,4 +251,5 @@ export const rootReducer = combineReducers({
   mediaData: mediaDataReducer,
   subscription: subscriptionReducer,
   display: mediaDisplayReducer,
+  listPageState: listReducer,
 });

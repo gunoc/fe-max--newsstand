@@ -1,50 +1,130 @@
 import { fetchActionCreator, displayActionCreator } from "../../../actions/mediaActions";
+import { Numbers } from "../../../constants/constants";
 import { store } from "../../../store/store";
-import { createComponent } from "../../../utils/createDOM";
+import { createComponent, createElement } from "../../../utils/createDOM";
+import { createList } from "../List/List";
 
-export function createGridAll() {
-  const $gridContainer = createComponent({
+export async function initGrid($list) {
+  const $grid = createGrid();
+  store.subscribe(() => renderGridItems($grid, store.getState(), $list));
+
+  await fetchActionCreator.fetchGridData();
+
+  $grid.addEventListener("mouseover", (e: MouseEvent) => {
+    handleMouseEvents({ event: e, state: store.getState() });
+  });
+  $grid.addEventListener("mouseout", (e: MouseEvent) => {
+    handleMouseEvents({ event: e, state: store.getState() });
+  });
+  $grid.addEventListener("click", (e: MouseEvent) => {
+    handleSubscription({ event: e, state: store.getState() });
+  });
+
+  return $grid;
+}
+
+function createGrid() {
+  const $gridContainer = createElement({
     tagName: "ul",
     attributes: { className: "media__grid--container" },
   });
 
-  for (let i = 0; i < 24; i++) {
-    const $item = createComponent({
-      tagName: "li",
-      attributes: { className: "media__grid--item" },
-    });
-    const $pressLogo = createComponent({
-      tagName: "img",
-      attributes: { src: "", alt: "" },
-    });
-    const $buttonLayer = createComponent({
-      tagName: "div",
-      attributes: { className: "button__add--container" },
-    });
-
-    $buttonLayer.classList.add("hide");
-
-    $buttonLayer.innerHTML = `
-    <div class="button__add">
-      <img src="./src/images/add-button.png" alt="추가" />
-      <span>구독하기</span>
-    </div>
-    `;
-    $item.append($pressLogo, $buttonLayer);
-    $gridContainer.append($item);
+  for (let i = 0; i < Numbers.ITEMS_PER_PAGE; i++) {
+    const gridItem = createGridItem();
+    $gridContainer.append(gridItem);
   }
 
   const $grid = createComponent({
     tagName: "div",
+    content: [$gridContainer],
     attributes: { className: "media__grid" },
   });
 
-  $grid.append($gridContainer);
   return $grid;
 }
 
-function updateGridItems(grid, pageData) {
-  const $gridItems = grid.querySelectorAll(".media__grid--item");
+function createGridItem() {
+  const $pressLogo = createElement({
+    tagName: "img",
+    attributes: { src: "", alt: "" },
+  });
+
+  const $buttonLayer = createSubscriptionButton();
+
+  const $item = createComponent({
+    tagName: "li",
+    content: [$pressLogo, $buttonLayer],
+    attributes: { className: "media__grid--item" },
+  });
+
+  return $item;
+}
+
+function createSubscriptionButton() {
+  const $buttonAdd = createComponent({
+    tagName: "div",
+    content: createButtonContent(),
+    attributes: { className: "button__add" },
+  });
+
+  const $buttonLayer = createComponent({
+    tagName: "div",
+    content: [$buttonAdd],
+    attributes: { className: "button__add--container" },
+  });
+
+  $buttonLayer.classList.add("hide");
+
+  return $buttonLayer;
+}
+
+function createButtonContent() {
+  const $img = createElement({
+    tagName: "img",
+    attributes: { src: "./src/images/add-button.png", alt: "추가" },
+  });
+
+  const $span = createElement({
+    tagName: "span",
+  });
+
+  return [$img, $span];
+}
+
+function renderGridItems($grid: HTMLElement, state: any, $list: HTMLElement) {
+  const allData = state.mediaData.data;
+  const subscribedPressesData = state.subscription.subscribedPresses;
+
+  const pageIndex = state.display.currentPage;
+  const startIndex = pageIndex * Numbers.ITEMS_PER_PAGE;
+  const endIndex = startIndex + Numbers.ITEMS_PER_PAGE;
+
+  const currentPageData = allData.slice(startIndex, endIndex);
+  const currentPageSubscribedData = subscribedPressesData.slice(startIndex, endIndex);
+
+  if (state.display.isAllPress && state.display.isGrid) {
+    console.log("그리드고 전체언론사");
+    $list.style.display = "none";
+    $grid.style.display = "grid";
+    updateGridItems($grid, currentPageData);
+  } else if (!state.display.isAllPress && state.display.isGrid) {
+    console.log("그리드고 구독한거");
+    $list.style.display = "none";
+    $grid.style.display = "grid";
+    updateGridItems($grid, currentPageSubscribedData);
+  } else if (!state.display.isAllPress && !state.display.isGrid) {
+    console.log("리스트고 구독한거");
+    $list.style.display = "";
+    $grid.style.display = "none";
+  } else if (state.display.isAllPress && !state.display.isGrid) {
+    console.log("리스트고 전체언론사");
+    $list.style.display = "";
+    $grid.style.display = "none";
+  }
+}
+
+function updateGridItems($grid: HTMLElement, pageData: any) {
+  const $gridItems = $grid.querySelectorAll(".media__grid--item");
 
   $gridItems.forEach((item, index) => {
     const img = item.querySelector("img");
@@ -56,44 +136,6 @@ function updateGridItems(grid, pageData) {
       img.setAttribute("alt", "");
     }
   });
-}
-
-function renderGridItems($grid, state) {
-  const allData = state.mediaData.data;
-  const subscribedPressesData = state.subscription.subscribedPresses;
-
-  const pageIndex = state.display.currentPage;
-  const itemsPerPage = 24;
-  const startIndex = pageIndex * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentPageData = allData.slice(startIndex, endIndex);
-  const currentPageSubscribedData = subscribedPressesData.slice(startIndex, endIndex);
-
-  if (state.display.isAllPress) {
-    updateGridItems($grid, currentPageData);
-  } else {
-    updateGridItems($grid, currentPageSubscribedData);
-  }
-}
-
-export async function grid() {
-  const $grid = createGridAll();
-  store.subscribe(() => renderGridItems($grid, store.getState()));
-
-  await fetchActionCreator.fetchGridData();
-
-  $grid.addEventListener("mouseover", (e) => {
-    handleMouseEvents({ event: e, state: store.getState() });
-  });
-  $grid.addEventListener("mouseout", (e) => {
-    handleMouseEvents({ event: e, state: store.getState() });
-  });
-  $grid.addEventListener("click", (e) => {
-    handleSubscription({ event: e, state: store.getState() });
-  });
-
-  return $grid;
 }
 
 function handleMouseEvents({ event, state }) {
@@ -145,6 +187,4 @@ function handleSubscription({ event, state }) {
       displayActionCreator.clickAddSubscription(payload);
     }
   }
-
-  console.log(store.getState());
 }

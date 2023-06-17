@@ -15,7 +15,6 @@ export function createStore(reducer, initialState = {}) {
         state = newState;
         listeners.forEach(function (listener) {
           listener(action);
-          console.log(listener);
         });
       }
     } finally {
@@ -31,7 +30,7 @@ export function createStore(reducer, initialState = {}) {
     };
   };
 
-  const getState = function () {
+  const getState = function (): object {
     return Object.freeze({ ...state });
   };
 

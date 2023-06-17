@@ -1,59 +1,106 @@
 import { displayActionCreator } from "../../../actions/mediaActions";
+import { Numbers } from "../../../constants/constants";
 import { store } from "../../../store/store";
-import { createComponent } from "../../../utils/createDOM";
+import { DisplayState, PageState } from "../../../types/types";
+import { createComponent, createElement } from "../../../utils/createDOM";
 
-function createButton({ className, innerHTML, title }) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = className;
-  button.innerHTML = innerHTML || "";
-  button.title = title || "";
-  return button;
+export function initNavigator() {
+  const $mainNavigator = MainNavigator();
+  const $pageButtons = PageButtons(store.getState());
+
+  store.subscribe(() => {
+    handlePageChange(store.getState());
+  });
+
+  $mainNavigator.addEventListener("click", handleViewOption);
+  $pageButtons.addEventListener("click", (e) => {
+    pageEventHandler(e, store.getState());
+  });
+
+  return [$mainNavigator, $pageButtons];
 }
 
 function MainNavigator() {
-  const textButtonAll = createButton({
-    className: "media__view--text--all active",
-    innerHTML: "전체 언론사",
-  });
-  const textButtonSub = createButton({
-    className: "media__view--text--subsciption",
-    innerHTML: "내가 구독한 언론사",
-  });
+  const $mediaViewTexts = createMediaViewTexts();
+  const $mediaViewIcons = createMediaViewIcons();
 
-  const mediaViewText = document.createElement("div");
-  mediaViewText.className = "media__view--text";
-  mediaViewText.appendChild(textButtonAll);
-  mediaViewText.appendChild(textButtonSub);
-
-  const iconButtonList = createButton({
-    className: "media__view--icon--list",
-    title: "리스트",
-  });
-  const iconButtonGrid = createButton({
-    className: "media__view--icon--grid",
-    title: "그리드",
+  const $mainNavigator = createComponent({
+    tagName: "div",
+    content: [$mediaViewTexts, $mediaViewIcons],
+    attributes: { className: "media__view" },
   });
 
-  const mediaViewIcon = document.createElement("div");
-  mediaViewIcon.className = "media__view--icon";
-  mediaViewIcon.appendChild(iconButtonList);
-  mediaViewIcon.appendChild(iconButtonGrid);
-
-  const mainNavigator = document.createElement("div");
-  mainNavigator.className = "media__view";
-  mainNavigator.appendChild(mediaViewText);
-  mainNavigator.appendChild(mediaViewIcon);
-
-  return mainNavigator;
+  return $mainNavigator;
 }
 
-function PageButton(props) {
-  const $prevButton = createButton({
-    className: "btn__box--prev",
+function createMediaViewTexts() {
+  const $textButtonAll = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--text--all", textContent: "전체 언론사" },
   });
-  const $nextButton = createButton({
-    className: "btn__box--next",
+  $textButtonAll.classList.add("active");
+
+  const $textButtonSub = createElement({
+    tagName: "button",
+    attributes: {
+      className: "media__view--text--subsciption",
+      textContent: "내가 구독한 언론사",
+    },
+  });
+
+  const $mediaViewTexts = createComponent({
+    tagName: "div",
+    content: [$textButtonAll, $textButtonSub],
+    attributes: { className: "media__view--text" },
+  });
+
+  return $mediaViewTexts;
+}
+
+function createMediaViewIcons() {
+  const $iconButtonList = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--icon--list", title: "리스트" },
+  });
+  const $iconButtonGrid = createElement({
+    tagName: "button",
+    attributes: { className: "media__view--icon--grid", title: "그리드" },
+  });
+
+  const $mediaViewIcons = createComponent({
+    tagName: "div",
+    content: [$iconButtonList, $iconButtonGrid],
+    attributes: { className: "media__view--icon" },
+  });
+
+  return $mediaViewIcons;
+}
+
+function PageButtons(props: any) {
+  const { $prevButton, $nextButton } = createPrevNextButtons(props);
+
+  const $buttonBox = createComponent({
+    tagName: "div",
+    content: [$prevButton, $nextButton],
+    attributes: { className: "btn__box" },
+  });
+
+  return $buttonBox;
+}
+
+function createPrevNextButtons(props: any) {
+  const $prevButton = createElement({
+    tagName: "button",
+    attributes: {
+      className: "btn__box--prev",
+    },
+  });
+
+  const $nextButton = createElement({
+    tagName: "button",
+    attributes: {
+      className: "btn__box--next",
+    },
   });
 
   const currentPage = props.display.currentPage;
@@ -62,29 +109,10 @@ function PageButton(props) {
     $prevButton.style.display = "none";
   }
 
-  const $buttonBox = document.createElement("div");
-  $buttonBox.className = "btn__box";
-  $buttonBox.appendChild($prevButton);
-  $buttonBox.appendChild($nextButton);
-
-  return $buttonBox;
+  return { $prevButton, $nextButton };
 }
 
-export function initNavigator() {
-  const $mainNavigator = MainNavigator();
-  const $pageButton = PageButton(store.getState());
-
-  store.subscribe(() => {
-    handlePageChange(store.getState());
-  });
-
-  $mainNavigator.addEventListener("click", handleViewOption);
-  $pageButton.addEventListener("click", pageEventHandler);
-
-  return [$mainNavigator, $pageButton];
-}
-
-function handlePageChange(state) {
+function handlePageChange(state: any) {
   const pageState = {
     currentPage: state.display.currentPage,
     subscribedItemCount: state.subscription.currentItem,
@@ -93,6 +121,7 @@ function handlePageChange(state) {
   const displayState = {
     isAllPress: state.display.isAllPress,
     isGrid: state.display.isGrid,
+    currentPage: state.display.currentPage,
   };
 
   updateButtonVisibility(
@@ -109,40 +138,54 @@ function handlePageChange(state) {
   );
 }
 
-function shouldHideNextButton(pageState, displayState) {
-  const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
-  const { isAllPress } = displayState;
-
-  if (isAllPress) {
-    return currentPage === 3;
-  } else {
-    return (
-      (currentPage === 0 && subscribedItemCount < 25) ||
-      currentPage === subscribedPageCount
-    );
-  }
-}
-
-function shouldHidePrevButton(pageState, displayState) {
-  const { currentPage } = pageState;
-  const { isAllPress } = displayState;
-  console.log(currentPage);
-
-  return currentPage === 0;
-}
-
-function updateButtonVisibility(selector, shouldHide, pageState, displayState) {
-  const $button = document.querySelector(selector);
+function updateButtonVisibility(
+  selector: string,
+  shouldHide: (pageState: PageState, displayState: DisplayState) => boolean,
+  pageState: PageState,
+  displayState: DisplayState
+) {
+  const $button = document.querySelector(selector) as HTMLElement;
   const shouldHideButton = shouldHide(pageState, displayState);
 
   $button.style.display = shouldHideButton ? "none" : "";
 }
 
-function handleViewOption(e) {
-  if (e.target.nodeName !== "BUTTON") {
+export function shouldHideNextButton(pageState: PageState, displayState: DisplayState) {
+  const { currentPage, subscribedItemCount, subscribedPageCount } = pageState;
+  const { isAllPress, isGrid } = displayState;
+
+  if (!isGrid) {
     return;
   }
-  const targetClassList = e.target.classList;
+
+  if (isAllPress) {
+    return currentPage === Numbers.MAX_GRID_PAGE;
+  } else {
+    return (
+      (currentPage === 0 && subscribedItemCount < Numbers.ITEMS_PER_PAGE + 1) ||
+      currentPage === subscribedPageCount
+    );
+  }
+}
+
+export function shouldHidePrevButton(pageState: PageState, displayState: DisplayState) {
+  const { currentPage } = pageState;
+  const { isGrid } = displayState;
+
+  if (!isGrid) {
+    return;
+  }
+
+  return currentPage === 0;
+}
+
+function handleViewOption(e: MouseEvent) {
+  const target = e.target as HTMLElement;
+  if (target.nodeName !== "BUTTON") {
+    return;
+  }
+
+  const targetClassList = target.classList;
   const viewAll = targetClassList.contains("media__view--text--all");
   const viewSubscription = targetClassList.contains("media__view--text--subsciption");
   const viewGrid = targetClassList.contains("media__view--icon--grid");
@@ -150,31 +193,59 @@ function handleViewOption(e) {
 
   if (viewAll) {
     displayActionCreator.clickAllPressView();
-    setActiveButtonClass(e.target, e.target.nextElementSibling);
+    const nextSibling = target.nextElementSibling;
+    if (nextSibling?.nodeName === "BUTTON") {
+      setActiveButtonClass(target, nextSibling as HTMLElement);
+    }
   }
+
   if (viewSubscription) {
     displayActionCreator.clickSubscriptionView();
-    setActiveButtonClass(e.target, e.target.previousElementSibling);
+    const previousSibling = target.previousElementSibling;
+    if (previousSibling?.nodeName === "BUTTON") {
+      setActiveButtonClass(target, previousSibling as HTMLElement);
+    }
+  }
+
+  if (viewGrid) {
+    displayActionCreator.clickGridView();
+  }
+
+  if (viewList) {
+    displayActionCreator.clickListView();
   }
 }
 
-function setActiveButtonClass(activeButton, inactiveButton) {
+function setActiveButtonClass(activeButton: HTMLElement, inactiveButton: HTMLElement) {
   activeButton.classList.add("active");
   inactiveButton.classList.remove("active");
 }
 
-function pageEventHandler(e) {
-  if (e.target.nodeName !== "BUTTON") {
+function pageEventHandler(e: MouseEvent, state) {
+  const target = e.target as HTMLElement;
+
+  if (target.nodeName !== "BUTTON") {
     return;
   }
 
-  const prev = e.target.classList.contains("btn__box--prev");
-  const next = e.target.classList.contains("btn__box--next");
+  const prev = target.classList.contains("btn__box--prev");
+  const next = target.classList.contains("btn__box--next");
 
-  if (prev) {
-    displayActionCreator.clickPrevButton();
-  }
-  if (next) {
-    displayActionCreator.clickNextButton();
+  if (state.display.isGrid) {
+    if (prev) {
+      displayActionCreator.clickPrevButton();
+    }
+
+    if (next) {
+      displayActionCreator.clickNextButton();
+    }
+  } else {
+    if (prev) {
+      displayActionCreator.clickListPrevButton(state);
+    }
+
+    if (next) {
+      displayActionCreator.clickListNextButton(state);
+    }
   }
 }
